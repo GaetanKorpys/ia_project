@@ -11,7 +11,7 @@ import awele.core.InvalidBotException;
  * @author Alexandre Blansché
  * Bot qui prend ses décisions selon le MinMax
  */
-public class NegamaxBot extends CompetitorBot {
+public class NegamaxBot extends DemoBot {
     /**
      * Profondeur maximale
      */

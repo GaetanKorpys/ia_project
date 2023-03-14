@@ -1,44 +1,44 @@
-Mémoire totale : 2,0 GiB
+Mémoire totale : 4,0 GiB
 2 classes ont été trouvées
-class awele.bot.negatest.NegamaxBot
-class awele.bot.NegamaxID.NegamaxBotID
+class awele.bot.demo.minmax.MinMaxBot
+class awele.bot.demo.minmax.MinMaxBot2
 
 Bot 1/2
-Classe : awele.bot.negatest.NegamaxBot
-Nom du bot : NegaMax V3 Profondeur = 6
+Classe : awele.bot.demo.minmax.MinMaxBot
+Nom du bot : MinMax
 Temps d'apprentissage : 00:00:00.000
-Durée d'une prise de décision : 00:00:00.013
-Usage mémoire : 409,5 KiB
-Usage mémoire maximum : 38,5 MiB
+Durée d'une prise de décision : 00:00:00.040
+Usage mémoire : 0 B
+Usage mémoire maximum : 121,0 MiB
 
 Bot 2/2
-Classe : awele.bot.NegamaxID.NegamaxBotID
-Nom du bot : NegaMax ID 
+Classe : awele.bot.demo.minmax.MinMaxBot2
+Nom du bot : MinMaxID
 Temps d'apprentissage : 00:00:00.000
-Durée d'une prise de décision : 00:00:00.128
-Usage mémoire : 41,1 KiB
-Usage mémoire maximum : 2,6 MiB
+Durée d'une prise de décision : 00:00:00.052
+Usage mémoire : 352 B
+Usage mémoire maximum : 158,0 MiB
 
 2 bots ont été instanciés
-Durée du chargement : 00:00:06.555
-Mémoire utilisée : 1,9 MiB
+Durée du chargement : 00:00:03.858
+Mémoire utilisée : 1,5 MiB
 
 Que le championnat commence !
 
 Affrontement 1/1
-NegaMax V3 Profondeur = 6 vs. NegaMax ID 
-Score : 3.0 - 0.0
-NegaMax V3 Profondeur = 6 a gagné
-Nombre de coups joués : 97.7 par match
-Durée : 00:00:03.168 par match
-Mémoire utilisée : 1,8 MiB
+MinMax vs. MinMaxID
+Score : 1.3 - 1.6
+MinMaxID a gagné
+Nombre de coups joués : 65.65 par match
+Durée : 00:00:02.305 par match
+Mémoire utilisée : 1,4 MiB
 
-Durée du championnat : 00:01:03.407
+Durée du championnat : 00:00:46.127
 
 Scores finaux :
-NegaMax V3 Profondeur = 6 : 3.0
-NegaMax ID  : 0.0
+MinMax : 1.3
+MinMaxID : 1.6
 
 Rangs :
-1. NegaMax V3 Profondeur = 6 : 3.0
-2. NegaMax ID  : 0.0
+1. MinMaxID : 1.6
+2. MinMax : 1.3

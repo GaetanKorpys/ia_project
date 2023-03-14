@@ -23,7 +23,7 @@ public abstract class MinMaxNode
     private double [] decision;
 
 
-
+    private int depth;
 
     /**
      * Constructeur... 
@@ -34,6 +34,7 @@ public abstract class MinMaxNode
      */
     public MinMaxNode (Board board, int depth, double alpha, double beta, double limitTime, double startTime)
     {
+        this.depth =depth;
         /* On crée un tableau des évaluations des coups à jouer pour chaque situation possible */
         this.decision = new double [Board.NB_HOLES];
         /* Initialisation de l'évaluation courante */
@@ -57,7 +58,7 @@ public abstract class MinMaxNode
                     if ((score < 0) ||
                             (copy.getScore (Board.otherPlayer (copy.getCurrentPlayer ())) >= 25) ||
                             (copy.getNbSeeds () <= 6) )
-                        this.decision [i] = this.scoreEntireBoardById (copy);
+                        this.decision [i] = this.diffScore (copy);
                     /* Sinon, on explore les coups suivants */
                     else
                     {
@@ -71,10 +72,11 @@ public abstract class MinMaxNode
                         }
                         /* Sinon (si la profondeur maximale est atteinte), on évalue la situation actuelle */
                         else
-                            this.decision [i] = this.scoreEntireBoardById (copy);
+                            this.decision [i] = this.diffScore (copy);
                     }
                     /* L'évaluation courante du noeud est mise à jour, selon le type de noeud (MinNode ou MaxNode) */
                     this.evaluation = this.minmax (this.decision [i], this.evaluation);
+
                     /* Coupe alpha-beta */ 
                     if (depth > 0)
                     {
@@ -89,31 +91,40 @@ public abstract class MinMaxNode
             }
     }
 
+    /*
     public static MinMaxNode iterativeDeepeningNegamax(Board board, double timeLimit) {
         int depth = 1;
         MinMaxNode bestNode = null;
         long startTime = System.currentTimeMillis();
         //long elapsedTime = System.currentTimeMillis() - startTime;
-        while (System.currentTimeMillis() - startTime < timeLimit && depth < 10) {
+        while (System.currentTimeMillis() - startTime < timeLimit) {
             MinMaxNode.maxDepth = depth;
             MinMaxNode currentNode = new MaxNode(board, timeLimit - (System.currentTimeMillis() - startTime), startTime );
             //System.out.println("time : "+ (System.currentTimeMillis() - startTime));
-            //System.out.println("prof " + depth +"\n");
-            //System.out.println("tab " + currentNode.getDecision());
-            //System.out.println("eval " + currentNode.getEvaluation()+"\n");
 
-			/*
-			if (currentNode.depth == 2) {
-				// Si on trouve un coup gagnant, on s'arrête
-				return currentNode;
-			}
-			*/
+            System.out.println("prof " + depth +"\n");
+            System.out.println("dec "+currentNode.decision[0] + currentNode.decision[1] + currentNode.decision[2] + currentNode.decision[3] + currentNode.decision[4] + currentNode.decision[5]);
+            System.out.println("eval " + currentNode.getEvaluation()+"\n");
+
             if (bestNode == null || currentNode.getEvaluation() > bestNode.getEvaluation()) {
                 bestNode = currentNode;
             }
             depth++;
         }
+        //System.out.println("eval "+bestNode.getEvaluation());
+        //System.out.println("dec "+bestNode.decision[0] + bestNode.decision[1] + bestNode.decision[2] + bestNode.decision[3] + bestNode.decision[4] + bestNode.decision[5] + "\n");
+        return bestNode;
+    }
+    */
+    public static MinMaxNode iterativeDeepeningNegamax(Board board, double timeLimit, int maxDepth) {
+        MinMaxNode bestNode = null;
+        long startTime = System.currentTimeMillis();
+        //long elapsedTime = System.currentTimeMillis() - startTime;
+        for ( MinMaxNode.maxDepth = 0; MinMaxNode.maxDepth <= maxDepth; MinMaxNode.maxDepth++ ) {
+            bestNode = new MaxNode(board,0, 0);
+        }
 
+        //bestNode = new MaxNode(board, 0, 0);
         return bestNode;
     }
 
@@ -142,6 +153,11 @@ public abstract class MinMaxNode
         return (25 * (board.getScore(board.getCurrentPlayer()) - board.getScore(Board.otherPlayer(board.getCurrentPlayer())))) - total;
     }
 
+    public int getDepth()
+    {
+        return depth;
+    }
+
     /** Pire score pour un joueur */
     protected abstract double worst ();
 
@@ -150,10 +166,15 @@ public abstract class MinMaxNode
      */
     protected static void initialize (Board board, int maxDepth)
     {
-        //MinMaxNode.maxDepth = maxDepth;
+        MinMaxNode.maxDepth = maxDepth;
         MinMaxNode.player = board.getCurrentPlayer ();
     }
 
+    protected static void initialize2 (Board board, int maxDepth)
+    {
+        //MinMaxNode.maxDepth = maxDepth;
+        MinMaxNode.player = board.getCurrentPlayer ();
+    }
     private int diffScore (Board board)
     {
         return board.getScore (MinMaxNode.player) - board.getScore (Board.otherPlayer (MinMaxNode.player));

@@ -1,6 +1,7 @@
 package awele.bot.NegamaxID;
 
 import awele.bot.CompetitorBot;
+import awele.bot.DemoBot;
 import awele.core.Board;
 import awele.core.InvalidBotException;
 
@@ -8,7 +9,7 @@ import awele.core.InvalidBotException;
  * @author Alexandre Blansché
  * Bot qui prend ses décisions selon le MinMax
  */
-public class NegamaxBotID extends CompetitorBot {
+public class NegamaxBotID extends DemoBot {
     /**
      * Profondeur maximale
      */
