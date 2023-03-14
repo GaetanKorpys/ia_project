@@ -32,7 +32,7 @@ public abstract class MinMaxNode
      * @param alpha Le seuil pour la coupe alpha
      * @param beta Le seuil pour la coupe beta
      */
-    public MinMaxNode (Board board, int depth, double alpha, double beta)
+    public MinMaxNode (Board board, int depth, double alpha, double beta, double limitTime, double startTime)
     {
         /* On crée un tableau des évaluations des coups à jouer pour chaque situation possible */
         this.decision = new double [Board.NB_HOLES];
@@ -56,8 +56,8 @@ public abstract class MinMaxNode
                        on évalue la situation actuelle */   
                     if ((score < 0) ||
                             (copy.getScore (Board.otherPlayer (copy.getCurrentPlayer ())) >= 25) ||
-                            (copy.getNbSeeds () <= 6))
-                        this.decision [i] = this.diffScore (copy);
+                            (copy.getNbSeeds () <= 6) )
+                        this.decision [i] = this.scoreEntireBoardById (copy);
                     /* Sinon, on explore les coups suivants */
                     else
                     {
@@ -65,13 +65,13 @@ public abstract class MinMaxNode
                         if (depth < MinMaxNode.maxDepth)
                         {
                             /* On construit le noeud suivant */
-                            MinMaxNode child = this.getNextNode (copy, depth + 1, alpha, beta);
+                            MinMaxNode child = this.getNextNode (copy, depth + 1, alpha, beta, limitTime - (System.currentTimeMillis() - startTime), startTime);
                             /* On récupère l'évaluation du noeud fils */
                             this.decision [i] = child.getEvaluation ();
                         }
                         /* Sinon (si la profondeur maximale est atteinte), on évalue la situation actuelle */
                         else
-                            this.decision [i] = this.diffScore (copy);
+                            this.decision [i] = this.scoreEntireBoardById (copy);
                     }
                     /* L'évaluation courante du noeud est mise à jour, selon le type de noeud (MinNode ou MaxNode) */
                     this.evaluation = this.minmax (this.decision [i], this.evaluation);
@@ -94,11 +94,11 @@ public abstract class MinMaxNode
         MinMaxNode bestNode = null;
         long startTime = System.currentTimeMillis();
         //long elapsedTime = System.currentTimeMillis() - startTime;
-        while (System.currentTimeMillis() - startTime < timeLimit && depth < 12) {
+        while (System.currentTimeMillis() - startTime < timeLimit && depth < 10) {
             MinMaxNode.maxDepth = depth;
-            MinMaxNode currentNode = new MaxNode(board);
-            System.out.println("time : "+ (System.currentTimeMillis() - startTime));
-            System.out.println("prof " + depth +"\n");
+            MinMaxNode currentNode = new MaxNode(board, timeLimit - (System.currentTimeMillis() - startTime), startTime );
+            //System.out.println("time : "+ (System.currentTimeMillis() - startTime));
+            //System.out.println("prof " + depth +"\n");
             //System.out.println("tab " + currentNode.getDecision());
             //System.out.println("eval " + currentNode.getEvaluation()+"\n");
 
@@ -116,6 +116,32 @@ public abstract class MinMaxNode
 
         return bestNode;
     }
+
+
+    private int scoreEntireBoardById(Board board) {
+        int total = 0;
+        int[] seedsPlayer = board.getPlayerHoles(), seedsOpponent = board.getOpponentHoles();
+
+        for (int i = 0; i < 6; i++) {
+            int seedP = seedsPlayer[i];
+            int seedO = seedsOpponent[i];
+            if (seedP > 12)
+                total += 28;
+            else if (seedP == 0)
+                total -= 54;
+            else if (seedP < 3)
+                total -= 36;
+
+            if (seedO > 12)
+                total -= 28;
+            else if (seedO == 0)
+                total += 54;
+            else if (seedO < 3)
+                total += 36;
+        }
+        return (25 * (board.getScore(board.getCurrentPlayer()) - board.getScore(Board.otherPlayer(board.getCurrentPlayer())))) - total;
+    }
+
     /** Pire score pour un joueur */
     protected abstract double worst ();
 
@@ -174,7 +200,7 @@ public abstract class MinMaxNode
      * @param beta Le seuil pour la coupe beta
      * @return Un noeud (MinNode ou MaxNode) du niveau suivant
      */
-    protected abstract MinMaxNode getNextNode (Board board, int depth, double alpha, double beta);
+    protected abstract MinMaxNode getNextNode (Board board, int depth, double alpha, double beta, double limitTime, double startTime);
 
     /**
      * L'évaluation du noeud

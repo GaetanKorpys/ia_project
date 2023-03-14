@@ -12,9 +12,9 @@ public class MaxNode extends MinMaxNode
      * Constructeur pour un noeud initial
      * @param board La situation de jeu pour laquelle il faut prendre une décision
      */
-    MaxNode (Board board)
+    MaxNode (Board board, double limitTime, double startTime)
     {
-        this (board, 0, -Double.MAX_VALUE, Double.MAX_VALUE);
+        this (board, 0, -Double.MAX_VALUE, Double.MAX_VALUE, limitTime, startTime);
     }
 
     /**
@@ -23,9 +23,9 @@ public class MaxNode extends MinMaxNode
      * @param depth La profondeur du noeud
      * @param alphabeta Le seuil pour la coupe alpha-beta
      */
-    MaxNode (Board board, int depth, double alpha, double beta)
+    MaxNode (Board board, int depth, double alpha, double beta, double limitTime, double startTime )
     {
-        super (board, depth, alpha, beta);
+        super (board, depth, alpha, beta, limitTime, startTime);
     }
 
     /**
@@ -63,9 +63,9 @@ public class MaxNode extends MinMaxNode
      * @return Un noeud MinNode du niveau suivant
      */
     @Override
-    protected MinMaxNode getNextNode (Board board, int depth, double alpha, double beta)
+    protected MinMaxNode getNextNode (Board board, int depth, double alpha, double beta, double limitTime, double startTime)
     {
-        return new MinNode (board, depth, alpha, beta);
+        return new MinNode (board, depth, alpha, beta, limitTime, startTime);
     }
 
     /**

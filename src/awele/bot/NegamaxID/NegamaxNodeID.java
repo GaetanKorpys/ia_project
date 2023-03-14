@@ -1,13 +1,16 @@
-package awele.bot.negatest;
+package awele.bot.NegamaxID;
 
 import awele.bot.demo.minmax.MinMaxNode;
+import awele.bot.negatest.NegamaxNode;
 import awele.core.Board;
 import awele.core.InvalidBotException;
+
+import javax.sound.midi.Soundbank;
 
 /**
  * @author Alexandre Blansché Noeud d'un arbre MinMax
  */
-public class NegamaxNode {
+public class NegamaxNodeID {
 	/**
 	 * Profondeur maximale
 	 */
@@ -38,19 +41,17 @@ public class NegamaxNode {
 	 * @param board L'état de la grille de jeu
 	 */
 
-	public static NegamaxNode iterativeDeepeningNegamax(Board board, int myTour, int opponentTour, double timeLimit) {
+	public static NegamaxNodeID iterativeDeepeningNegamax(Board board, int myTour, int opponentTour, double timeLimit) {
 		double depth = 1;
-		NegamaxNode bestNode = null;
+		NegamaxNodeID bestNode = null;
 		long startTime = System.currentTimeMillis();
 		//long elapsedTime = System.currentTimeMillis() - startTime;
-		while (System.currentTimeMillis() - startTime < timeLimit && depth < 12) {
-			NegamaxNode.maxDepth = (int)depth;
-			NegamaxNode currentNode = new NegamaxNode(board, depth, myTour, opponentTour, -Double.MAX_VALUE, Double.MAX_VALUE);
-			//System.out.println("time : "+ (System.currentTimeMillis() - startTime));
-			//System.out.println("prof " + depth +"\n");
-			//System.out.println("tab " + currentNode.getDecision());
-			//System.out.println("eval " + currentNode.getEvaluation()+"\n");
-
+		while (depth < 10 /*System.currentTimeMillis() - startTime < timeLimit &&*/ ) {
+			NegamaxNodeID.maxDepth = (int)depth;
+			NegamaxNodeID currentNode = new NegamaxNodeID(board, 0, myTour, opponentTour, -Double.MAX_VALUE, Double.MAX_VALUE);
+			System.out.println("time : "+ (System.currentTimeMillis() - startTime));
+			System.out.println("prof " + depth +"\n");
+			//System.out.println("eval " + currentNode.getEvaluation());
 			/*
 			if (currentNode.depth == 2) {
 				// Si on trouve un coup gagnant, on s'arrête
@@ -67,7 +68,7 @@ public class NegamaxNode {
 	}
 
 
-	public NegamaxNode(Board board, double depth, int myTour, int opponentTour, double a, double b) {
+	public NegamaxNodeID(Board board, double depth, int myTour, int opponentTour, double a, double b) {
 		this.depth = depth;
 		/* On crée index de notre situation */
 		
@@ -90,21 +91,21 @@ public class NegamaxNode {
 					//int score_tmp = copy.playMoveSimulationScore(copy.getCurrentPlayer(), decision);
 					copy = board.playMoveSimulationBoard(myTour, decisionTemp);
 					
-					
+					//!(depth < NegamaxNodeID.maxDepth)
 					if ((copy.getScore(myTour) < 0) || (copy.getScore(opponentTour) >= 25)
-							|| (copy.getNbSeeds() <= 6) || !(depth < NegamaxNode.maxDepth))
+							|| (copy.getNbSeeds() <= 6) || !(depth < NegamaxNodeID.maxDepth))
 						this.decision[i] = scoreEntireBoardById(copy, myTour, opponentTour);
 						/* Sinon, on explore les coups suivants */
 					else {
-						
-						
-						
+
+
+
 						/* Si le noeud n'a pas encore été calculé, on le construit */
 						/* On construit le noeud suivant */
-						NegamaxNode child = new NegamaxNode(copy, depth + 1, opponentTour, myTour, -b, -a);
+						NegamaxNodeID child = new NegamaxNodeID(copy, depth + 1, opponentTour, myTour, -b, -a);
 						/* On récupère l'évaluation du noeud fils */
 						this.decision[i] = -child.getEvaluation();
-						
+
 					}
 					/*
 					 * L'évaluation courante du noeud est mise à jour, selon le type de noeud
@@ -133,13 +134,13 @@ public class NegamaxNode {
 	 * Initialisation
 	 */
 	protected static void initialize(Board board, int maxDepth) {
-		NegamaxNode.maxDepth = maxDepth;
-		NegamaxNode.player = board.getCurrentPlayer ();
+		//NegamaxNodeID.maxDepth = maxDepth;
+		NegamaxNodeID.player = board.getCurrentPlayer ();
 	}
 
 	private int diffScore (Board board)
 	{
-		return board.getScore (NegamaxNode.player) - board.getScore (Board.otherPlayer (NegamaxNode.player));
+		return board.getScore (NegamaxNodeID.player) - board.getScore (Board.otherPlayer (NegamaxNodeID.player));
 	}
 	
 	private int scoreEntireBoardById(Board board, int myTour, int opponentTour) {

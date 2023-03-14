@@ -11,7 +11,7 @@ import awele.core.InvalidBotException;
  * @author Alexandre Blansché
  * Bot qui joue au hasard
  */
-public class RandomBot extends CompetitorBot
+public class RandomBot extends DemoBot
 {
     private Random random;
     
