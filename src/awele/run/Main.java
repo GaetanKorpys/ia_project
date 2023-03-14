@@ -119,9 +119,9 @@ public final class Main extends OutputWriter
         Reflections reflections = new Reflections ("awele.bot");
         // Pour l'évaluation, seuls les bots des étudiants (CompetitorBot) sont mis en compétition 
         //Set <Class <? extends CompetitorBot>> subClassesTmp = reflections.getSubTypesOf (CompetitorBot.class);
-        Set <Class <? extends DemoBot>> subClassesTmp = reflections.getSubTypesOf (DemoBot.class);
-        ArrayList <Class <? extends DemoBot>> subClasses = new ArrayList <Class <? extends DemoBot>> ();
-        for (Class <? extends DemoBot> subClass : subClassesTmp)
+        Set <Class <? extends CompetitorBot>> subClassesTmp = reflections.getSubTypesOf (CompetitorBot.class);
+        ArrayList <Class <? extends CompetitorBot>> subClasses = new ArrayList <Class <? extends CompetitorBot>> ();
+        for (Class <? extends CompetitorBot> subClass : subClassesTmp)
         {
             if (!Modifier.isAbstract (subClass.getModifiers ()))
                 subClasses.add (subClass);

@@ -1,5 +1,6 @@
 package awele.bot.negatest;
 
+import awele.bot.demo.minmax.MinMaxNode;
 import awele.core.Board;
 import awele.core.InvalidBotException;
 
@@ -11,8 +12,12 @@ public class NegamaxNode {
 	 * Profondeur maximale
 	 */
 	private static int maxDepth;
-	
-	
+
+	private static final long MAX_TIME_MS = 100;
+
+	/** Numéro de joueur de l'IA */
+	private static int player;
+
 	private final double depth;
 	
 	/**
@@ -31,9 +36,37 @@ public class NegamaxNode {
 	 * Constructeur...
 	 *
 	 * @param board L'état de la grille de jeu
-	 * @param depth La profondeur du noeud
 	 */
-	
+
+	public static NegamaxNode iterativeDeepeningNegamax(Board board, int myTour, int opponentTour, double timeLimit) {
+		double depth = 1;
+		NegamaxNode bestNode = null;
+		long startTime = System.currentTimeMillis();
+		//long elapsedTime = System.currentTimeMillis() - startTime;
+		while (System.currentTimeMillis() - startTime < timeLimit && depth < 12) {
+
+			NegamaxNode currentNode = new NegamaxNode(board, depth, myTour, opponentTour, -Double.MAX_VALUE, Double.MAX_VALUE);
+			System.out.println("time : "+ (System.currentTimeMillis() - startTime));
+			System.out.println("prof " + depth +"\n");
+			//System.out.println("tab " + currentNode.getDecision());
+			//System.out.println("eval " + currentNode.getEvaluation()+"\n");
+
+			/*
+			if (currentNode.depth == 2) {
+				// Si on trouve un coup gagnant, on s'arrête
+				return currentNode;
+			}
+			*/
+			if (bestNode == null || currentNode.getEvaluation() > bestNode.getEvaluation()) {
+				bestNode = currentNode;
+			}
+			depth++;
+		}
+
+		return bestNode;
+	}
+
+
 	public NegamaxNode(Board board, double depth, int myTour, int opponentTour, double a, double b) {
 		this.depth = depth;
 		/* On crée index de notre situation */
@@ -60,7 +93,7 @@ public class NegamaxNode {
 					
 					if ((copy.getScore(myTour) < 0) || (copy.getScore(opponentTour) >= 25)
 							|| (copy.getNbSeeds() <= 6) || !(depth < NegamaxNode.maxDepth))
-						this.decision[i] = scoreEntireBoardById(copy, myTour, opponentTour);
+						this.decision[i] = diffScore(copy);
 						/* Sinon, on explore les coups suivants */
 					else {
 						
@@ -69,7 +102,6 @@ public class NegamaxNode {
 						/* Si le noeud n'a pas encore été calculé, on le construit */
 						/* On construit le noeud suivant */
 						NegamaxNode child = new NegamaxNode(copy, depth + 1, opponentTour, myTour, -b, -a);
-						
 						/* On récupère l'évaluation du noeud fils */
 						this.decision[i] = -child.getEvaluation();
 						
@@ -105,10 +137,15 @@ public class NegamaxNode {
 	/**
 	 * Initialisation
 	 */
-	protected static void initialize(int maxDepth) {
+	protected static void initialize(Board board, int maxDepth) {
 		NegamaxNode.maxDepth = maxDepth;
+		NegamaxNode.player = board.getCurrentPlayer ();
 	}
-	
+
+	private int diffScore (Board board)
+	{
+		return board.getScore (NegamaxNode.player) - board.getScore (Board.otherPlayer (NegamaxNode.player));
+	}
 	
 	private int scoreEntireBoardById(Board board, int myTour, int opponentTour) {
 		int total = 0;

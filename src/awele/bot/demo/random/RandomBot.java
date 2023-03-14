@@ -2,6 +2,7 @@ package awele.bot.demo.random;
 
 import java.util.Random;
 
+import awele.bot.CompetitorBot;
 import awele.bot.DemoBot;
 import awele.core.Board;
 import awele.core.InvalidBotException;
@@ -10,7 +11,7 @@ import awele.core.InvalidBotException;
  * @author Alexandre Blansché
  * Bot qui joue au hasard
  */
-public class RandomBot extends DemoBot
+public class RandomBot extends CompetitorBot
 {
     private Random random;
     

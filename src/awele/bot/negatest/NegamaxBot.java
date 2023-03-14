@@ -2,6 +2,8 @@ package awele.bot.negatest;
 
 import awele.bot.CompetitorBot;
 import awele.bot.DemoBot;
+import awele.bot.demo.minmax.MinMaxBot;
+import awele.bot.demo.minmax.MinMaxNode;
 import awele.core.Board;
 import awele.core.InvalidBotException;
 
@@ -9,11 +11,11 @@ import awele.core.InvalidBotException;
  * @author Alexandre Blansché
  * Bot qui prend ses décisions selon le MinMax
  */
-public class NegamaxBot extends CompetitorBot {
+public class NegamaxBot extends DemoBot {
     /**
      * Profondeur maximale
      */
-    private static final int MAX_DEPTH = 10;
+    private static final int MAX_DEPTH = 8;
 
     /**
      * @throws InvalidBotException
@@ -28,9 +30,7 @@ public class NegamaxBot extends CompetitorBot {
      * Cette fonction est appelée avant chaque affrontement
      */
     @Override
-    public void initialize() {
-        NegamaxNode.initialize(NegamaxBot.MAX_DEPTH);
-    }
+    public void initialize() {}
 
     /**
      * Pas d'apprentissage
@@ -43,7 +43,10 @@ public class NegamaxBot extends CompetitorBot {
      */
     @Override
     public double[] getDecision(Board board) {
-        return new NegamaxNode(board, 0, board.getCurrentPlayer(), Board.otherPlayer(board.getCurrentPlayer()), -9999, 9999).getDecision();
+        System.out.println("New Tour : \n");
+        NegamaxNode.initialize (board, NegamaxBot.MAX_DEPTH);
+        return NegamaxNode.iterativeDeepeningNegamax(board, board.getCurrentPlayer(), Board.otherPlayer(board.getCurrentPlayer()), 100).getDecision();
+        //return new NegamaxNode(board, 0, board.getCurrentPlayer(), Board.otherPlayer(board.getCurrentPlayer()), -9999, 9999).getDecision();
     }
 
     /**

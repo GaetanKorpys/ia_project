@@ -46,7 +46,8 @@ public class MinMaxBot extends CompetitorBot
     public double [] getDecision (Board board)
     {
         MinMaxNode.initialize (board, MinMaxBot.MAX_DEPTH);
-        return new MaxNode (board).getDecision ();
+        //return new MaxNode (board).getDecision ();
+        return MinMaxNode.iterativeDeepeningNegamax(board,100 ).getDecision();
     }
 
     /**

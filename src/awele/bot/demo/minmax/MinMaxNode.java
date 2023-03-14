@@ -1,5 +1,6 @@
 package awele.bot.demo.minmax;
 
+import awele.bot.negatest.NegamaxNode;
 import awele.core.Board;
 import awele.core.InvalidBotException;
 
@@ -20,6 +21,9 @@ public abstract class MinMaxNode
 
     /** Évaluation des coups selon MinMax */
     private double [] decision;
+
+
+
 
     /**
      * Constructeur... 
@@ -85,6 +89,33 @@ public abstract class MinMaxNode
             }
     }
 
+    public static MinMaxNode iterativeDeepeningNegamax(Board board, double timeLimit) {
+        int depth = 1;
+        MinMaxNode bestNode = null;
+        long startTime = System.currentTimeMillis();
+        //long elapsedTime = System.currentTimeMillis() - startTime;
+        while (System.currentTimeMillis() - startTime < timeLimit && depth < 12) {
+            MinMaxNode.maxDepth = depth;
+            MinMaxNode currentNode = new MaxNode(board);
+            System.out.println("time : "+ (System.currentTimeMillis() - startTime));
+            System.out.println("prof " + depth +"\n");
+            //System.out.println("tab " + currentNode.getDecision());
+            //System.out.println("eval " + currentNode.getEvaluation()+"\n");
+
+			/*
+			if (currentNode.depth == 2) {
+				// Si on trouve un coup gagnant, on s'arrête
+				return currentNode;
+			}
+			*/
+            if (bestNode == null || currentNode.getEvaluation() > bestNode.getEvaluation()) {
+                bestNode = currentNode;
+            }
+            depth++;
+        }
+
+        return bestNode;
+    }
     /** Pire score pour un joueur */
     protected abstract double worst ();
 
@@ -93,7 +124,7 @@ public abstract class MinMaxNode
      */
     protected static void initialize (Board board, int maxDepth)
     {
-        MinMaxNode.maxDepth = maxDepth;
+        //MinMaxNode.maxDepth = maxDepth;
         MinMaxNode.player = board.getCurrentPlayer ();
     }
 
