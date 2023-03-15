@@ -12,7 +12,7 @@ import awele.core.InvalidBotException;
 public class MinMaxBot2 extends DemoBot
 {
     /** Profondeur maximale */
-    private static final int MAX_DEPTH = 10;
+    private static final int MAX_DEPTH = 14;
 	
     /**
      * @throws InvalidBotException

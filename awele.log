@@ -8,21 +8,21 @@ Classe : awele.bot.negatest.NegamaxBot
 Nom du bot : NegaMax V3 Profondeur = 8
 Auteur(s) : Quentin BEAUPUY & Vivien KORPYS
 Temps d'apprentissage : 00:00:00.000
-Durée d'une prise de décision : 00:00:00.011
+Durée d'une prise de décision : 00:00:00.006
 Usage mémoire : 0 B
-Usage mémoire maximum : 26,0 MiB
+Usage mémoire maximum : 179,0 MiB
 
 Bot 2/2
 Classe : awele.bot.NegamaxID.NegamaxBotID
 Nom du bot : NegaMaxCopyPasta ID 
 Auteur(s) : Gaetan Korpys et Theo Rousseau
 Temps d'apprentissage : 00:00:00.000
-Durée d'une prise de décision : 00:00:00.160
-Usage mémoire : 25,4 KiB
-Usage mémoire maximum : 85,1 MiB
+Durée d'une prise de décision : 00:00:00.031
+Usage mémoire : 27,2 KiB
+Usage mémoire maximum : 36,0 MiB
 
 2 bots ont été instanciés
-Durée du chargement : 00:00:08.636
+Durée du chargement : 00:00:02.821
 Mémoire utilisée : 1,5 MiB
 
 Que le championnat commence !

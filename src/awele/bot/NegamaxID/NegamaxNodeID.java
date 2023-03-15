@@ -113,13 +113,86 @@ public class NegamaxNodeID {
 			}
 		}
 	}
-	
-	
+
+	private int myHeuristic(Board board, int myTour, int opponentTour) {
+		int[] playerHoles = board.getPlayerHoles();
+		int[] opponentHoles = board.getOpponentHoles();
+		int totalScore = 0;
+
+		// Heuristique pour le début de partie
+		if (board.getNbSeeds() == 48) {
+			int[] seq1 = {6, 2, 4};
+			int[] seq2 = {2, 4, 6};
+			int[] seq3 = {5, 3, 2};
+			int[][] sequences = {seq1, seq2, seq3};
+			int maxScore = Integer.MIN_VALUE;
+			int bestHole = -1;
+
+			for (int i = 0; i < playerHoles.length; i++) {
+				if (playerHoles[i] == 0) continue; // On ne considère pas les trous vides
+				for (int[] seq : sequences) {
+					int score = 0;
+					int currentHole = i;
+					boolean validSequence = true;
+					for (int j = 0; j < seq.length; j++) {
+						int nextHole = (currentHole + seq[j]) % playerHoles.length;
+						if (j == seq.length - 1 && playerHoles[nextHole] < 2) { // On ne veut pas semer dans un trou qui risque de se faire capturer
+							validSequence = false;
+							break;
+						}
+						score += playerHoles[nextHole];
+						currentHole = nextHole;
+					}
+					if (validSequence && score > maxScore) {
+						maxScore = score;
+						bestHole = i;
+					}
+				}
+			}
+
+			if (bestHole != -1) return maxScore;
+			else return -maxScore;
+		}
+
+		// Heuristique pour le milieu de partie
+		else {
+			int playerKroo = 0, opponentKroo = 0, playerEmpty = 0, opponentEmpty = 0, playerLowSeeds = 0, opponentLowSeeds = 0;
+			for (int i = 0; i < playerHoles.length; i++) {
+				if (playerHoles[i] >= 12) {
+					playerKroo++;
+				}
+				else if (playerHoles[i] == 0) {
+					playerEmpty++;
+				}
+				else if (playerHoles[i] <= 3) {
+					playerLowSeeds++;
+				}
+
+				if (opponentHoles[i] >= 12) {
+					opponentKroo++;
+				}
+				else if (opponentHoles[i] == 0) {
+					opponentEmpty++;
+				}
+				else if (opponentHoles[i] <= 3) {
+					opponentLowSeeds++;
+				}
+			}
+
+			int krooScore = 25 * (playerKroo - opponentKroo);
+			int emptyScore = -54 * (playerEmpty - opponentEmpty);
+			int lowSeedsScore = -36 * (playerLowSeeds - opponentLowSeeds);
+
+			return krooScore + emptyScore + lowSeedsScore;
+		}
+	}
+
+
 	/**
 	 * Initialisation
 	 */
 	protected static void initialize(Board board, int maxDepth) {
-		//NegamaxNodeID.maxDepth = maxDepth;
+		NegamaxNodeID.maxDepth = maxDepth;
 		NegamaxNodeID.player = board.getCurrentPlayer ();
 	}
 
@@ -127,7 +200,84 @@ public class NegamaxNodeID {
 	{
 		return board.getScore (NegamaxNodeID.player) - board.getScore (Board.otherPlayer (NegamaxNodeID.player));
 	}
-	
+
+	private int scoreKroo2(Board board, int myTour, int opponentTour) {
+		int[] seedsPlayer = board.getPlayerHoles();
+		int[] seedsOpponent = board.getOpponentHoles();
+		int total = 0;
+		int krooCount = 0;
+
+		for (int i = 0; i < 6; i++) {
+			int seedP = seedsPlayer[i];
+			int seedO = seedsOpponent[i];
+			if (seedP >= 12) {
+				total += 24;
+				krooCount++;
+			} else if (seedP > 0) {
+				total += 4;
+			}
+			if (seedO == 0) {
+				total -= 16;
+			}
+		}
+
+		int scoreDiff = board.getScore(myTour) - board.getScore(opponentTour);
+
+		if (krooCount > 1) {
+			total += 20;
+		}
+
+		return total + scoreDiff;
+	}
+
+
+	private int scoreSeedsCount(Board board, int myTour, int opponentTour) {
+		int[] seedsPlayer = board.getPlayerHoles();
+		int[] seedsOpponent = board.getOpponentHoles();
+		int playerSeedsCount = 0;
+		int opponentSeedsCount = 0;
+
+		for (int i = 0; i < 6; i++) {
+			playerSeedsCount += seedsPlayer[i];
+			opponentSeedsCount += seedsOpponent[i];
+		}
+
+		int scoreDiff = board.getScore(myTour) - board.getScore(opponentTour);
+
+		return (playerSeedsCount - opponentSeedsCount) + scoreDiff;
+	}
+
+	private int scoreKroo(Board board, int myTour, int opponentTour) {
+		int[] seedsPlayer = board.getPlayerHoles();
+		int[] seedsOpponent = board.getOpponentHoles();
+		int total = 0;
+
+		for (int i = 0; i < 6; i++) {
+			int seedP = seedsPlayer[i];
+			int seedO = seedsOpponent[i];
+
+			// check if hole can potentially create a Kroo
+			if (seedP >= 12) {
+				// add extra weight to holes with more seeds
+				total += 2 * seedP;
+			}
+			// check if hole can be used to capture opponent's seeds
+			else if (seedP > 0 && seedP + i == 6) {
+				total += 4 * seedP;
+			}
+
+			// check if opponent's hole can be used to capture opponent's seeds
+			if (seedO > 0 && seedO + i == 6) {
+				total -= 4 * seedO;
+			}
+		}
+
+		int scoreDiff = board.getScore(myTour) - board.getScore(opponentTour);
+
+		return total + scoreDiff;
+	}
+
+
 	private int scoreEntireBoardById(Board board, int myTour, int opponentTour) {
 		int total = 0;
 		int[] seedsPlayer = board.getPlayerHoles(), seedsOpponent = board.getOpponentHoles();
@@ -135,21 +285,25 @@ public class NegamaxNodeID {
 		for (int i = 0; i < 6; i++) {
 			int seedP = seedsPlayer[i];
 			int seedO = seedsOpponent[i];
-			if (seedP > 12)
-				total += 28;
+			if (seedP >= 12)
+				total += 30;
 			else if (seedP == 0)
-				total -= 54;
+				total -= 50;
 			else if (seedP < 3)
-				total -= 36;
-			
-			if (seedO > 12)
-				total -= 28;
+				total -= 40;
+
+			if (seedO >= 12)
+				total -= 30;
 			else if (seedO == 0)
-				total += 54;
+				total += 50;
 			else if (seedO < 3)
-				total += 36;
+				total += 40;
+
+
 		}
-		return (25 * (board.getScore(myTour) - board.getScore(opponentTour))) - total;
+		System.out.println(total);
+		return  100*(board.getScore(myTour) - board.getScore(opponentTour)) - total;
+		//return (25 * (board.getScore(myTour) - board.getScore(opponentTour))) - total;
 	}
 	
 	

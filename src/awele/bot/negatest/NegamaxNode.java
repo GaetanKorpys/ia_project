@@ -93,7 +93,7 @@ public class NegamaxNode {
 					
 					if ((copy.getScore(myTour) < 0) || (copy.getScore(opponentTour) >= 25)
 							|| (copy.getNbSeeds() <= 6) || !(depth < NegamaxNode.maxDepth))
-						this.decision[i] = scoreEntireBoardById(copy, myTour, opponentTour);
+						this.decision[i] = diffScore(copy);
 						/* Sinon, on explore les coups suivants */
 					else {
 						
@@ -141,7 +141,11 @@ public class NegamaxNode {
 	{
 		return board.getScore (NegamaxNode.player) - board.getScore (Board.otherPlayer (NegamaxNode.player));
 	}
-	
+
+
+
+
+
 	private int scoreEntireBoardById(Board board, int myTour, int opponentTour) {
 		int total = 0;
 		int[] seedsPlayer = board.getPlayerHoles(), seedsOpponent = board.getOpponentHoles();
