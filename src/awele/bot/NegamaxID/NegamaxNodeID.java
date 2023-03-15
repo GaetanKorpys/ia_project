@@ -1,5 +1,6 @@
 package awele.bot.NegamaxID;
 
+import awele.bot.demo.minmax.MaxNode;
 import awele.bot.demo.minmax.MinMaxNode;
 import awele.bot.negatest.NegamaxNode;
 import awele.core.Board;
@@ -20,8 +21,6 @@ public class NegamaxNodeID {
 
 	/** Numéro de joueur de l'IA */
 	private static int player;
-
-	private final double depth;
 	
 	/**
 	 * L'évaluation du noeud
@@ -41,45 +40,31 @@ public class NegamaxNodeID {
 	 * @param board L'état de la grille de jeu
 	 */
 
-	public static NegamaxNodeID iterativeDeepeningNegamax(Board board, int myTour, int opponentTour, double timeLimit) {
-		double depth = 1;
+	public static NegamaxNodeID iterativeDeepeningNegamax(Board board, int myTour, int oppenentTour,  double timeLimit, int maxDepth) {
 		NegamaxNodeID bestNode = null;
 		long startTime = System.currentTimeMillis();
 		//long elapsedTime = System.currentTimeMillis() - startTime;
-		while (depth < 10 /*System.currentTimeMillis() - startTime < timeLimit &&*/ ) {
-			NegamaxNodeID.maxDepth = (int)depth;
-			NegamaxNodeID currentNode = new NegamaxNodeID(board, 0, myTour, opponentTour, -Double.MAX_VALUE, Double.MAX_VALUE);
-			System.out.println("time : "+ (System.currentTimeMillis() - startTime));
-			System.out.println("prof " + depth +"\n");
-			//System.out.println("eval " + currentNode.getEvaluation());
-			/*
-			if (currentNode.depth == 2) {
-				// Si on trouve un coup gagnant, on s'arrête
-				return currentNode;
-			}
-			*/
-			if (bestNode == null || currentNode.getEvaluation() > bestNode.getEvaluation()) {
-				bestNode = currentNode;
-			}
-			depth++;
+		for ( NegamaxNodeID.maxDepth = 0; NegamaxNodeID.maxDepth <= maxDepth  && System.currentTimeMillis() - startTime < timeLimit; NegamaxNodeID.maxDepth++ ) {
+			bestNode = new NegamaxNodeID(board, 0, myTour, oppenentTour, -Double.MAX_VALUE, Double.MAX_VALUE);
 		}
 
+		//bestNode = new MaxNode(board, 0, 0);
 		return bestNode;
 	}
 
 
+
 	public NegamaxNodeID(Board board, double depth, int myTour, int opponentTour, double a, double b) {
-		this.depth = depth;
 		/* On crée index de notre situation */
-		
-		
+
+
 		/* On crée un tableau des évaluations des coups à jouer pour chaque situation possible */
 		this.decision = new double[Board.NB_HOLES];
 		/* Initialisation de l'évaluation courante */
 		this.evaluation = -Double.MAX_VALUE;
 		Board copy;
 		double[] decisionTemp = new double[Board.NB_HOLES];
-		
+
 		for (int i = 0; i < Board.NB_HOLES; i++) {
 			/* Si le coup est jouable */
 			if (board.getPlayerHoles()[i] != 0) {
@@ -90,8 +75,8 @@ public class NegamaxNodeID {
 				try {
 					//int score_tmp = copy.playMoveSimulationScore(copy.getCurrentPlayer(), decision);
 					copy = board.playMoveSimulationBoard(myTour, decisionTemp);
-					
-					//!(depth < NegamaxNodeID.maxDepth)
+
+
 					if ((copy.getScore(myTour) < 0) || (copy.getScore(opponentTour) >= 25)
 							|| (copy.getNbSeeds() <= 6) || !(depth < NegamaxNodeID.maxDepth))
 						this.decision[i] = scoreEntireBoardById(copy, myTour, opponentTour);
@@ -114,14 +99,14 @@ public class NegamaxNodeID {
 					if (this.decision[i] > this.evaluation) {
 						this.evaluation = this.decision[i];
 					}
-					
+
 					if (depth > 0) {
 						a = Double.max(a, this.decision[i]);
 						if (a >= b) {
 							break;
 						}
 					}
-					
+
 				} catch (InvalidBotException e) {
 					this.decision[i] = 0;
 				}

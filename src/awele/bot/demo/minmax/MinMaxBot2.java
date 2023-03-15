@@ -9,10 +9,10 @@ import awele.core.InvalidBotException;
  * @author Alexandre Blansché
  * Bot qui prend ses décisions selon le MinMax
  */
-public class MinMaxBot2 extends CompetitorBot
+public class MinMaxBot2 extends DemoBot
 {
     /** Profondeur maximale */
-    private static final int MAX_DEPTH = 6;
+    private static final int MAX_DEPTH = 10;
 	
     /**
      * @throws InvalidBotException
@@ -47,7 +47,7 @@ public class MinMaxBot2 extends CompetitorBot
     {
         MinMaxNode.initialize2 (board, MinMaxBot2.MAX_DEPTH);
         //return new MaxNode (board, 0, 0).getDecision ();
-        MinMaxNode minMaxNode = MinMaxNode.iterativeDeepeningNegamax(board, 70, MAX_DEPTH);
+        MinMaxNode minMaxNode = MinMaxNode.iterativeDeepeningNegamax(board, 70, MinMaxBot2.MAX_DEPTH);
         return minMaxNode.getDecision();
     }
 

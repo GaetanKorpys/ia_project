@@ -120,7 +120,7 @@ public abstract class MinMaxNode
         MinMaxNode bestNode = null;
         long startTime = System.currentTimeMillis();
         //long elapsedTime = System.currentTimeMillis() - startTime;
-        for ( MinMaxNode.maxDepth = 0; MinMaxNode.maxDepth <= maxDepth; MinMaxNode.maxDepth++ ) {
+        for ( MinMaxNode.maxDepth = 0; MinMaxNode.maxDepth <= maxDepth  && System.currentTimeMillis() - startTime < timeLimit; MinMaxNode.maxDepth++ ) {
             bestNode = new MaxNode(board,0, 0);
         }
 
