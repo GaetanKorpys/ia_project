@@ -1,4 +1,4 @@
-Mémoire totale : 4,0 GiB
+Mémoire totale : 2,0 GiB
 2 classes ont été trouvées
 class awele.bot.negatest.NegamaxBot
 class awele.bot.NegamaxID.NegamaxBotID
@@ -7,23 +7,38 @@ Bot 1/2
 Classe : awele.bot.negatest.NegamaxBot
 Nom du bot : NegaMax V3 Profondeur = 8
 Temps d'apprentissage : 00:00:00.000
-Durée d'une prise de décision : 00:00:00.006
-Usage mémoire : 0 B
-Usage mémoire maximum : 179,0 MiB
+Durée d'une prise de décision : 00:00:00.018
+Usage mémoire : 408,7 KiB
+Usage mémoire maximum : 1,9 MiB
 
 Bot 2/2
 Classe : awele.bot.NegamaxID.NegamaxBotID
 Nom du bot : NegaMaxCopyPasta ID 
 Temps d'apprentissage : 00:00:00.000
-Durée d'une prise de décision : 00:00:00.031
-Usage mémoire : 27,2 KiB
-Usage mémoire maximum : 36,0 MiB
+Durée d'une prise de décision : 00:00:00.020
+Usage mémoire : 26,5 KiB
+Usage mémoire maximum : 18,0 MiB
 
 2 bots ont été instanciés
-Durée du chargement : 00:00:02.821
-Mémoire utilisée : 1,5 MiB
+Durée du chargement : 00:00:02.705
+Mémoire utilisée : 1,9 MiB
 
 Que le championnat commence !
 
 Affrontement 1/1
 NegaMax V3 Profondeur = 8 vs. NegaMaxCopyPasta ID 
+Score : 0.1 - 2.8
+NegaMaxCopyPasta ID  a gagné
+Nombre de coups joués : 71.4 par match
+Durée : 00:00:01.155 par match
+Mémoire utilisée : 1,8 MiB
+
+Durée du championnat : 00:00:23.127
+
+Scores finaux :
+NegaMax V3 Profondeur = 8 : 0.1
+NegaMaxCopyPasta ID  : 2.8
+
+Rangs :
+1. NegaMaxCopyPasta ID  : 2.8
+2. NegaMax V3 Profondeur = 8 : 0.1

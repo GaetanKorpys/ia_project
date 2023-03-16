@@ -78,7 +78,18 @@ public class NegamaxNode {
 		this.evaluation = -Double.MAX_VALUE;
 		Board copy;
 		double[] decisionTemp = new double[Board.NB_HOLES];
-		
+
+		/*
+		Tri à faire
+		On peut utiliser la fonction d'évaluation pour déterminer l'ordre des noeuds à tester
+		Si un état est bon à faible profondeur,
+		il est plus susceptible d'être bon à l'état profond + 1 également
+		 */
+
+		//
+
+
+
 		for (int i = 0; i < Board.NB_HOLES; i++) {
 			/* Si le coup est jouable */
 			if (board.getPlayerHoles()[i] != 0) {

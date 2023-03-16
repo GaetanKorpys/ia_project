@@ -301,7 +301,7 @@ public class NegamaxNodeID {
 
 
 		}
-		System.out.println(total);
+		//System.out.println(total);
 		return  100*(board.getScore(myTour) - board.getScore(opponentTour)) - total;
 		//return (25 * (board.getScore(myTour) - board.getScore(opponentTour))) - total;
 	}
