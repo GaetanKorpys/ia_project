@@ -9,10 +9,10 @@ import awele.core.InvalidBotException;
  * @author Alexandre Blansché
  * Bot qui prend ses décisions selon le MinMax
  */
-public class MinMaxIDBot extends CompetitorBot
+public class MinMaxIDBot extends DemoBot
 {
     /** Profondeur maximale */
-    private static final int MAX_DEPTH = 8;
+    private static final int MAX_DEPTH = 9;
 
     /** Temps d'exécutuion limite */
     private static final int TIME_LIMIT = 100;
@@ -25,7 +25,7 @@ public class MinMaxIDBot extends CompetitorBot
      */
     public MinMaxIDBot() throws InvalidBotException
     {
-        this.setBotName ("MinMaxID & " + HEURISTIC);
+        this.setBotName ("MinMaxID & " + HEURISTIC + " & " + MAX_DEPTH);
         this.addAuthor ("Alexandre Blansché");
     }
 

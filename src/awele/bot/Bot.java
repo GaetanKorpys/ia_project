@@ -17,6 +17,13 @@ public abstract class Bot
     private String name;
     private ArrayList <String> authors;
 
+    public enum HEURISTICS
+    {
+        DIFF_SCORE,
+        BEST,
+        TEST
+    }
+
     protected Bot ()
     {
         this.name = "";

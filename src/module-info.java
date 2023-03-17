@@ -10,7 +10,6 @@ module ia_project {
 	exports awele.output;
 	exports awele.bot.demo.knn1;
 	exports awele.bot.demo.knn2;
-    exports awele.bot.mybot;
     exports awele.bot.test;
 
     requires java.desktop;

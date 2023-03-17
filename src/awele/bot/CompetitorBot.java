@@ -7,10 +7,5 @@ package awele.bot;
  */
 public abstract class CompetitorBot extends Bot
 {
-    public enum HEURISTICS
-    {
-        DIFF_SCORE,
-        BEST,
-        TEST
-    }
+
 }

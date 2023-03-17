@@ -1,9 +1,5 @@
-package awele.bot.test;
+package awele.bot.oldNegamax;
 
-import awele.bot.Bot;
-import awele.bot.CompetitorBot;
-import awele.bot.NegamaxID.NegamaxNodeID;
-import awele.bot.demo.minmax.MinMaxNode;
 import awele.core.Board;
 import awele.core.InvalidBotException;
 
@@ -11,27 +7,26 @@ import awele.core.InvalidBotException;
  * @author Alexandre Blansché Noeud d'un arbre MinMax
  */
 public class NegamaxNode {
-	/** Numéro de joueur de l'IA */
-	private static int player;
-
 	/**
 	 * Profondeur maximale
 	 */
 	private static int maxDepth;
 	
+	
+	private final double depth;
+	
 	/**
 	 * L'évaluation du noeud
 	 */
 	private double evaluation;
-
+	
+	
 	/**
 	 * Évaluation des coups selon MinMax
 	 */
 	private final double[] decision;
-
-	/** Test pour les heuristiques */
-	static CompetitorBot.HEURISTICS testHeuristic;
-
+	
+	
 	/**
 	 * Constructeur...
 	 *
@@ -40,6 +35,8 @@ public class NegamaxNode {
 	 */
 	
 	public NegamaxNode(Board board, double depth, int myTour, int opponentTour, double a, double b) {
+		this.depth = depth;
+		/* On crée index de notre situation */
 		
 		
 		/* On crée un tableau des évaluations des coups à jouer pour chaque situation possible */
@@ -63,19 +60,7 @@ public class NegamaxNode {
 					
 					if ((copy.getScore(myTour) < 0) || (copy.getScore(opponentTour) >= 25)
 							|| (copy.getNbSeeds() <= 6) || !(depth < NegamaxNode.maxDepth))
-					{
-						switch (testHeuristic){
-							case DIFF_SCORE:
-								this.decision [i] = this.diffScore (copy);
-								break;
-							case BEST:
-								this.decision [i] = this.best (copy);
-								break;
-							case TEST:
-								this.decision [i] = this.test (copy);
-								break;
-						}
-					}
+						this.decision[i] = scoreEntireBoardById(copy, myTour, opponentTour);
 						/* Sinon, on explore les coups suivants */
 					else {
 						
@@ -116,32 +101,16 @@ public class NegamaxNode {
 		}
 	}
 	
-
-	protected static void initialize(Board board, int maxDepth, Bot.HEURISTICS testHeuristic)
-	{
+	
+	/**
+	 * Initialisation
+	 */
+	protected static void initialize(int maxDepth) {
 		NegamaxNode.maxDepth = maxDepth;
-		NegamaxNode.player = board.getCurrentPlayer ();
-		NegamaxNode.testHeuristic = testHeuristic;
-	}
-
-	protected static void initialize (Board board, Bot.HEURISTICS testHeuristic)
-	{
-		NegamaxNode.player = board.getCurrentPlayer ();
-		NegamaxNode.testHeuristic = testHeuristic;
-	}
-	public static NegamaxNode iterativeDeepeningNegamax(Board board, int myTour, int oppenentTour, double timeLimit, int maxDepth) {
-
-		NegamaxNode bestNode = null;
-		long startTime = System.currentTimeMillis();
-
-		for ( NegamaxNode.maxDepth = 0; NegamaxNode.maxDepth <= maxDepth  && System.currentTimeMillis() - startTime < timeLimit; NegamaxNode.maxDepth++ ) {
-			bestNode = new NegamaxNode(board, 0, myTour, oppenentTour, -Double.MAX_VALUE, Double.MAX_VALUE);
-		}
-
-		return bestNode;
 	}
 	
-	private int best(Board board) {
+	
+	private int scoreEntireBoardById(Board board, int myTour, int opponentTour) {
 		int total = 0;
 		int[] seedsPlayer = board.getPlayerHoles(), seedsOpponent = board.getOpponentHoles();
 		
@@ -162,16 +131,7 @@ public class NegamaxNode {
 			else if (seedO < 3)
 				total += 36;
 		}
-		return (25 * (board.getScore(NegamaxNode.player) - board.getScore(Board.otherPlayer(NegamaxNode.player)))) - total;
-	}
-
-	private int test(Board board) {
-		return 0;
-	}
-
-	private int diffScore (Board board)
-	{
-		return board.getScore (NegamaxNode.player) - board.getScore (Board.otherPlayer (NegamaxNode.player));
+		return (25 * (board.getScore(myTour) - board.getScore(opponentTour))) - total;
 	}
 	
 	

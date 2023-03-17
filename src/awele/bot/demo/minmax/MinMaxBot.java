@@ -11,7 +11,7 @@ import awele.core.InvalidBotException;
 public class MinMaxBot extends CompetitorBot
 {
     /** Profondeur maximale */
-    private static final int MAX_DEPTH = 6;
+    private static final int MAX_DEPTH = 9;
 
     /** Heuristique choisie */
     private static final HEURISTICS HEURISTIC = HEURISTICS.DIFF_SCORE;
@@ -22,7 +22,7 @@ public class MinMaxBot extends CompetitorBot
      */
     public MinMaxBot() throws InvalidBotException
     {
-        this.setBotName ("MinMax & " + HEURISTIC);
+        this.setBotName ("MinMax & " + HEURISTIC + " & " + MAX_DEPTH);
         this.addAuthor ("Alexandre Blansché");
     }
 

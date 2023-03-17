@@ -1,6 +1,8 @@
 package awele.bot.demo.minmax;
 
+import awele.bot.Bot;
 import awele.bot.CompetitorBot;
+import awele.bot.DemoBot;
 import awele.core.Board;
 import awele.core.InvalidBotException;
 
@@ -96,6 +98,9 @@ public abstract class MinMaxNode
                     /* L'évaluation courante du noeud est mise à jour, selon le type de noeud (MinNode ou MaxNode) */
                     this.evaluation = this.minmax (this.decision [i], this.evaluation);
 
+                    if(this.alphabeta(this.evaluation, alpha, beta))
+                        break;
+
                     /* Coupe alpha-beta */ 
                     if (depth > 0)
                     {
@@ -110,10 +115,12 @@ public abstract class MinMaxNode
             }
     }
 
+
+
     public static MinMaxNode iterativeDeepeningNegamax(Board board, double timeLimit, int maxDepth) {
         MinMaxNode bestNode = null;
         long startTime = System.currentTimeMillis();
-        for ( MinMaxNode.maxDepth = 0; MinMaxNode.maxDepth <= maxDepth  && System.currentTimeMillis() - startTime < timeLimit; MinMaxNode.maxDepth++ ) {
+        for ( MinMaxNode.maxDepth = 0; MinMaxNode.maxDepth <= maxDepth  /*&& System.currentTimeMillis() - startTime < timeLimit*/; MinMaxNode.maxDepth++ ) {
             bestNode = new MaxNode(board,0, 0);
         }
 
@@ -151,7 +158,7 @@ public abstract class MinMaxNode
             else if (seedO < 3)
                 total += 36;
         }
-        return (25 * (board.getScore(board.getCurrentPlayer()) - board.getScore(Board.otherPlayer(board.getCurrentPlayer())))) - total;
+        return (25 * (board.getScore (MinMaxNode.player) - board.getScore(Board.otherPlayer (MinMaxNode.player)))) - total;
     }
 
 
@@ -161,14 +168,14 @@ public abstract class MinMaxNode
     /**
      * Initialisation
      */
-    protected static void initialize(Board board, int maxDepth, CompetitorBot.HEURISTICS testHeuristic)
+    protected static void initialize(Board board, int maxDepth, Bot.HEURISTICS testHeuristic)
     {
         MinMaxNode.maxDepth = maxDepth;
         MinMaxNode.player = board.getCurrentPlayer ();
         MinMaxNode.testHeuristic = testHeuristic;
     }
 
-    protected static void initialize (Board board, CompetitorBot.HEURISTICS testHeuristic)
+    protected static void initialize (Board board, Bot.HEURISTICS testHeuristic)
     {
         MinMaxNode.player = board.getCurrentPlayer ();
         MinMaxNode.testHeuristic = testHeuristic;
