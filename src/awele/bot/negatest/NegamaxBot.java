@@ -2,6 +2,7 @@ package awele.bot.negatest;
 
 import awele.bot.CompetitorBot;
 import awele.bot.DemoBot;
+import awele.bot.NegamaxID.NegamaxBotID;
 import awele.bot.demo.minmax.MinMaxBot;
 import awele.bot.demo.minmax.MinMaxNode;
 import awele.core.Board;
@@ -22,7 +23,7 @@ public class NegamaxBot extends CompetitorBot {
      */
     public NegamaxBot() throws InvalidBotException {
         this.setBotName("NegaMax V3 Profondeur = " + MAX_DEPTH);
-        this.addAuthor("Quentin BEAUPUY & Vivien KORPYS");
+        this.addAuthor("Negamax");
     }
 
     /**
@@ -43,9 +44,8 @@ public class NegamaxBot extends CompetitorBot {
      */
     @Override
     public double[] getDecision(Board board) {
-        //System.out.println("New Tour : \n");
         NegamaxNode.initialize (board, NegamaxBot.MAX_DEPTH);
-        //return NegamaxNode.iterativeDeepeningNegamax(board, board.getCurrentPlayer(), Board.otherPlayer(board.getCurrentPlayer()), 100).getDecision();
+        //return NegamaxNode.iterativeDeepeningNegamax(board, board.getCurrentPlayer(), Board.otherPlayer(board.getCurrentPlayer()), 100,  NegamaxBot.MAX_DEPTH).getDecision();
         return new NegamaxNode(board, 0, board.getCurrentPlayer(), Board.otherPlayer(board.getCurrentPlayer()), -9999, 9999).getDecision();
     }
 

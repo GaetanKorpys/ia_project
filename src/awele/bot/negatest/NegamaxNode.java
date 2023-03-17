@@ -1,5 +1,6 @@
 package awele.bot.negatest;
 
+import awele.bot.NegamaxID.NegamaxNodeID;
 import awele.bot.demo.minmax.MinMaxNode;
 import awele.core.Board;
 import awele.core.InvalidBotException;
@@ -18,7 +19,6 @@ public class NegamaxNode {
 	/** Numéro de joueur de l'IA */
 	private static int player;
 
-	private final double depth;
 	
 	/**
 	 * L'évaluation du noeud
@@ -38,37 +38,23 @@ public class NegamaxNode {
 	 * @param board L'état de la grille de jeu
 	 */
 
-	public static NegamaxNode iterativeDeepeningNegamax(Board board, int myTour, int opponentTour, double timeLimit) {
-		double depth = 1;
+	public static NegamaxNode iterativeDeepeningNegamax(Board board, int myTour, int oppenentTour, double timeLimit, int maxDepth) {
 		NegamaxNode bestNode = null;
 		long startTime = System.currentTimeMillis();
 		//long elapsedTime = System.currentTimeMillis() - startTime;
-		while (System.currentTimeMillis() - startTime < timeLimit && depth < 12) {
-			NegamaxNode.maxDepth = (int)depth;
-			NegamaxNode currentNode = new NegamaxNode(board, depth, myTour, opponentTour, -Double.MAX_VALUE, Double.MAX_VALUE);
-			//System.out.println("time : "+ (System.currentTimeMillis() - startTime));
-			//System.out.println("prof " + depth +"\n");
-			//System.out.println("tab " + currentNode.getDecision());
-			//System.out.println("eval " + currentNode.getEvaluation()+"\n");
+		double[] decision;
+		for ( NegamaxNode.maxDepth = 0; NegamaxNode.maxDepth <= maxDepth  && System.currentTimeMillis() - startTime < timeLimit; NegamaxNode.maxDepth++ ) {
 
-			/*
-			if (currentNode.depth == 2) {
-				// Si on trouve un coup gagnant, on s'arrête
-				return currentNode;
-			}
-			*/
-			if (bestNode == null || currentNode.getEvaluation() > bestNode.getEvaluation()) {
-				bestNode = currentNode;
-			}
-			depth++;
+
+			bestNode = new NegamaxNode(board, 0, myTour, oppenentTour, -Double.MAX_VALUE, Double.MAX_VALUE);
+			//decision = bestNode.getDecision();//NegamaxNodeID.moveOrdering(decision);
+
 		}
-
 		return bestNode;
 	}
 
 
 	public NegamaxNode(Board board, double depth, int myTour, int opponentTour, double a, double b) {
-		this.depth = depth;
 		/* On crée index de notre situation */
 		
 		

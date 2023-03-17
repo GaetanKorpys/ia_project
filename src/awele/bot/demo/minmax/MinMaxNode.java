@@ -170,7 +170,7 @@ public abstract class MinMaxNode
         MinMaxNode.player = board.getCurrentPlayer ();
     }
 
-    protected static void initialize2 (Board board, int maxDepth)
+    protected static void initializeID (Board board, int maxDepth)
     {
         //MinMaxNode.maxDepth = maxDepth;
         MinMaxNode.player = board.getCurrentPlayer ();

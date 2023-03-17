@@ -45,7 +45,7 @@ public class MinMaxBot2 extends DemoBot
     @Override
     public double [] getDecision (Board board)
     {
-        MinMaxNode.initialize2 (board, MinMaxBot2.MAX_DEPTH);
+        MinMaxNode.initializeID (board, MinMaxBot2.MAX_DEPTH);
         //return new MaxNode (board, 0, 0).getDecision ();
         MinMaxNode minMaxNode = MinMaxNode.iterativeDeepeningNegamax(board, 70, MinMaxBot2.MAX_DEPTH);
         return minMaxNode.getDecision();

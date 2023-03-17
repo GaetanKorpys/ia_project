@@ -13,7 +13,7 @@ public class NegamaxBotID extends CompetitorBot {
     /**
      * Profondeur maximale
      */
-    private static final int MAX_DEPTH = 8 ;
+    private static final int MAX_DEPTH = 14 ;
 
     /**
      * @throws InvalidBotException
@@ -42,10 +42,9 @@ public class NegamaxBotID extends CompetitorBot {
      */
     @Override
     public double[] getDecision(Board board) {
-        //System.out.println("New Tour : \n");
         NegamaxNodeID.initialize (board, NegamaxBotID.MAX_DEPTH);
-        //return NegamaxNodeID.iterativeDeepeningNegamax(board, board.getCurrentPlayer(), Board.otherPlayer(board.getCurrentPlayer()), 100, NegamaxBotID.MAX_DEPTH).getDecision();
-        return new NegamaxNodeID(board, 0, board.getCurrentPlayer(), Board.otherPlayer(board.getCurrentPlayer()), -9999, 9999).getDecision();
+        return NegamaxNodeID.iterativeDeepeningNegamax(board, board.getCurrentPlayer(), Board.otherPlayer(board.getCurrentPlayer()), 100, NegamaxBotID.MAX_DEPTH).getDecision();
+        //return new NegamaxNodeID(board, 0, board.getCurrentPlayer(), Board.otherPlayer(board.getCurrentPlayer()), -9999, 9999).getDecision();
     }
 
     /**
