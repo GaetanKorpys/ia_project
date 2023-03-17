@@ -1,16 +1,12 @@
-package awele.bot.mybot;
+package awele.bot.test;
 
-import awele.bot.CompetitorBot;
 import awele.bot.DemoBot;
-import awele.bot.demo.first.FirstBot;
 import awele.bot.demo.knn1.Knn1Bot;
 import awele.bot.demo.knn2.Knn2Bot;
 import awele.bot.demo.last.LastBot;
-import awele.bot.random.RandomBot;
 import awele.core.Awele;
 import awele.core.Board;
 import awele.core.InvalidBotException;
-import awele.run.Main;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -19,7 +15,6 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 
 import java.util.Arrays;
-import java.util.HashMap;
 
 import java.util.Random;
 

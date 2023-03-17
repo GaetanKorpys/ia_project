@@ -1,28 +1,30 @@
-package awele.bot.NegamaxID;
+package awele.bot.test;
 
 import awele.bot.CompetitorBot;
 import awele.bot.DemoBot;
 import awele.core.Board;
 import awele.core.InvalidBotException;
 
+import java.util.Date;
+
 /**
  * @author Alexandre Blansché
  * Bot qui prend ses décisions selon le MinMax
  */
-public class NegamaxBotID extends DemoBot {
+public class NegamaxIDBot extends DemoBot {
     /**
      * Profondeur maximale
      */
-    private static final int MAX_DEPTH = 14 ;
+    private static final int MAX_DEPTH = 8;
 
-    private static int TIME_LIMIT = 100;
+    private static final int TIME_LIMIT = 100;
+
     /**
      * @throws InvalidBotException
      */
-    public NegamaxBotID() throws InvalidBotException {
-        this.setBotName("NegaMaxCopyPasta ID ");
-        this.addAuthor("Gaetan Korpys");
-        this.addAuthor("Theo Rousseau");
+    public NegamaxIDBot() throws InvalidBotException {
+        this.setBotName("NegaMax V3 Profondeur = " + MAX_DEPTH);
+        this.addAuthor("Negamax");
     }
 
     /**
@@ -43,9 +45,8 @@ public class NegamaxBotID extends DemoBot {
      */
     @Override
     public double[] getDecision(Board board) {
-        NegamaxNodeID.initialize (board, NegamaxBotID.MAX_DEPTH);
-        return NegamaxNodeID.iterativeDeepeningNegamax(board, board.getCurrentPlayer(), Board.otherPlayer(board.getCurrentPlayer()), NegamaxBotID.TIME_LIMIT, NegamaxBotID.MAX_DEPTH).getDecision();
-        //return new NegamaxNodeID(board, 0, board.getCurrentPlayer(), Board.otherPlayer(board.getCurrentPlayer()), -9999, 9999).getDecision();
+        return NegamaxNode.iterativeDeepeningNegamax(board, board.getCurrentPlayer(), Board.otherPlayer(board.getCurrentPlayer()), NegamaxIDBot.TIME_LIMIT,  NegamaxIDBot.MAX_DEPTH).getDecision();
+
     }
 
     /**

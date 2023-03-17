@@ -1,7 +1,6 @@
-package awele.bot.negatest;
+package awele.bot.test;
 
 import awele.bot.NegamaxID.NegamaxNodeID;
-import awele.bot.demo.minmax.MinMaxNode;
 import awele.core.Board;
 import awele.core.InvalidBotException;
 
@@ -13,49 +12,25 @@ public class NegamaxNode {
 	 * Profondeur maximale
 	 */
 	private static int maxDepth;
-
-	private static final long MAX_TIME_MS = 100;
-
-	/** Numéro de joueur de l'IA */
-	private static int player;
-
 	
 	/**
 	 * L'évaluation du noeud
 	 */
 	private double evaluation;
-	
-	
+
 	/**
 	 * Évaluation des coups selon MinMax
 	 */
 	private final double[] decision;
-	
-	
+
 	/**
 	 * Constructeur...
 	 *
 	 * @param board L'état de la grille de jeu
+	 * @param depth La profondeur du noeud
 	 */
-
-	public static NegamaxNode iterativeDeepeningNegamax(Board board, int myTour, int oppenentTour, double timeLimit, int maxDepth) {
-		NegamaxNode bestNode = null;
-		long startTime = System.currentTimeMillis();
-		//long elapsedTime = System.currentTimeMillis() - startTime;
-		double[] decision;
-		for ( NegamaxNode.maxDepth = 0; NegamaxNode.maxDepth <= maxDepth  && System.currentTimeMillis() - startTime < timeLimit; NegamaxNode.maxDepth++ ) {
-
-
-			bestNode = new NegamaxNode(board, 0, myTour, oppenentTour, -Double.MAX_VALUE, Double.MAX_VALUE);
-			//decision = bestNode.getDecision();//NegamaxNodeID.moveOrdering(decision);
-
-		}
-		return bestNode;
-	}
-
-
+	
 	public NegamaxNode(Board board, double depth, int myTour, int opponentTour, double a, double b) {
-		/* On crée index de notre situation */
 		
 		
 		/* On crée un tableau des évaluations des coups à jouer pour chaque situation possible */
@@ -64,18 +39,7 @@ public class NegamaxNode {
 		this.evaluation = -Double.MAX_VALUE;
 		Board copy;
 		double[] decisionTemp = new double[Board.NB_HOLES];
-
-		/*
-		Tri à faire
-		On peut utiliser la fonction d'évaluation pour déterminer l'ordre des noeuds à tester
-		Si un état est bon à faible profondeur,
-		il est plus susceptible d'être bon à l'état profond + 1 également
-		 */
-
-		//
-
-
-
+		
 		for (int i = 0; i < Board.NB_HOLES; i++) {
 			/* Si le coup est jouable */
 			if (board.getPlayerHoles()[i] != 0) {
@@ -90,7 +54,7 @@ public class NegamaxNode {
 					
 					if ((copy.getScore(myTour) < 0) || (copy.getScore(opponentTour) >= 25)
 							|| (copy.getNbSeeds() <= 6) || !(depth < NegamaxNode.maxDepth))
-						this.decision[i] = diffScore(copy);
+						this.decision[i] = scoreEntireBoardById(copy, myTour, opponentTour);
 						/* Sinon, on explore les coups suivants */
 					else {
 						
@@ -99,8 +63,14 @@ public class NegamaxNode {
 						/* Si le noeud n'a pas encore été calculé, on le construit */
 						/* On construit le noeud suivant */
 						NegamaxNode child = new NegamaxNode(copy, depth + 1, opponentTour, myTour, -b, -a);
+						
 						/* On récupère l'évaluation du noeud fils */
 						this.decision[i] = -child.getEvaluation();
+						
+						/*
+						 * Sinon (si la profondeur maximale est atteinte), on évalue la situation
+						 * actuelle
+						 */
 						
 					}
 					/*
@@ -125,24 +95,23 @@ public class NegamaxNode {
 		}
 	}
 	
-	
-	/**
-	 * Initialisation
-	 */
-	protected static void initialize(Board board, int maxDepth) {
+
+	protected static void initialize(int maxDepth) {
 		NegamaxNode.maxDepth = maxDepth;
-		NegamaxNode.player = board.getCurrentPlayer ();
 	}
 
-	private int diffScore (Board board)
-	{
-		return board.getScore (NegamaxNode.player) - board.getScore (Board.otherPlayer (NegamaxNode.player));
+	public static NegamaxNode iterativeDeepeningNegamax(Board board, int myTour, int oppenentTour, double timeLimit, int maxDepth) {
+
+		NegamaxNode bestNode = null;
+		long startTime = System.currentTimeMillis();
+
+		for ( NegamaxNode.maxDepth = 0; NegamaxNode.maxDepth <= maxDepth  && System.currentTimeMillis() - startTime < timeLimit; NegamaxNode.maxDepth++ ) {
+			bestNode = new NegamaxNode(board, 0, myTour, oppenentTour, -Double.MAX_VALUE, Double.MAX_VALUE);
+		}
+
+		return bestNode;
 	}
-
-
-
-
-
+	
 	private int scoreEntireBoardById(Board board, int myTour, int opponentTour) {
 		int total = 0;
 		int[] seedsPlayer = board.getPlayerHoles(), seedsOpponent = board.getOpponentHoles();

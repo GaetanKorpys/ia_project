@@ -1,7 +1,6 @@
 package awele.bot.demo.minmax;
 
 import awele.bot.CompetitorBot;
-import awele.bot.DemoBot;
 import awele.core.Board;
 import awele.core.InvalidBotException;
 
@@ -13,13 +12,17 @@ public class MinMaxBot extends CompetitorBot
 {
     /** Profondeur maximale */
     private static final int MAX_DEPTH = 6;
-	
+
+    /** Heuristique choisie */
+    private static final HEURISTICS HEURISTIC = HEURISTICS.DIFF_SCORE;
+
+
     /**
      * @throws InvalidBotException
      */
-    public MinMaxBot () throws InvalidBotException
+    public MinMaxBot() throws InvalidBotException
     {
-        this.setBotName ("MinMax");
+        this.setBotName ("MinMax & " + HEURISTIC);
         this.addAuthor ("Alexandre Blansché");
     }
 
@@ -45,10 +48,9 @@ public class MinMaxBot extends CompetitorBot
     @Override
     public double [] getDecision (Board board)
     {
-        MinMaxNode.initialize (board, MinMaxBot.MAX_DEPTH);
+        MinMaxNode.initialize (board, MinMaxBot.MAX_DEPTH, HEURISTIC);
         MinMaxNode minMaxNode = new MaxNode(board,0,0);
         return minMaxNode.getDecision();
-        //return MinMaxNode.iterativeDeepeningNegamax(board,90 ).getDecision();
     }
 
     /**

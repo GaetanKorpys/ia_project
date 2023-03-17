@@ -1,6 +1,6 @@
 package awele.bot.demo.minmax;
 
-import awele.bot.negatest.NegamaxNode;
+import awele.bot.CompetitorBot;
 import awele.core.Board;
 import awele.core.InvalidBotException;
 
@@ -22,8 +22,8 @@ public abstract class MinMaxNode
     /** Évaluation des coups selon MinMax */
     private double [] decision;
 
-
-    private int depth;
+    /** Test pour les heuristiques */
+    static CompetitorBot.HEURISTICS testHeuristic;
 
     /**
      * Constructeur... 
@@ -34,7 +34,6 @@ public abstract class MinMaxNode
      */
     public MinMaxNode (Board board, int depth, double alpha, double beta, double limitTime, double startTime)
     {
-        this.depth =depth;
         /* On crée un tableau des évaluations des coups à jouer pour chaque situation possible */
         this.decision = new double [Board.NB_HOLES];
         /* Initialisation de l'évaluation courante */
@@ -55,10 +54,20 @@ public abstract class MinMaxNode
                     copy = copy.playMoveSimulationBoard (copy.getCurrentPlayer (), decision);
                     /* Si la nouvelle situation de jeu est un coup qui met fin à la partie,
                        on évalue la situation actuelle */   
-                    if ((score < 0) ||
-                            (copy.getScore (Board.otherPlayer (copy.getCurrentPlayer ())) >= 25) ||
-                            (copy.getNbSeeds () <= 6) )
-                        this.decision [i] = this.diffScore (copy);
+                    if ((score < 0) || (copy.getScore (Board.otherPlayer (copy.getCurrentPlayer ())) >= 25) || (copy.getNbSeeds () <= 6) ){
+                        switch (testHeuristic){
+                            case DIFF_SCORE:
+                                this.decision [i] = this.diffScore (copy);
+                                break;
+                            case BEST:
+                                this.decision [i] = this.best (copy);
+                                break;
+                            case TEST:
+                                this.decision [i] = this.test (copy);
+                                break;
+                        }
+                    }
+
                     /* Sinon, on explore les coups suivants */
                     else
                     {
@@ -72,7 +81,17 @@ public abstract class MinMaxNode
                         }
                         /* Sinon (si la profondeur maximale est atteinte), on évalue la situation actuelle */
                         else
-                            this.decision [i] = this.diffScore (copy);
+                            switch (testHeuristic){
+                                case DIFF_SCORE:
+                                    this.decision [i] = this.diffScore (copy);
+                                    break;
+                                case BEST:
+                                    this.decision [i] = this.best (copy);
+                                    break;
+                                case TEST:
+                                    this.decision [i] = this.test (copy);
+                                    break;
+                            }
                     }
                     /* L'évaluation courante du noeud est mise à jour, selon le type de noeud (MinNode ou MaxNode) */
                     this.evaluation = this.minmax (this.decision [i], this.evaluation);
@@ -91,35 +110,9 @@ public abstract class MinMaxNode
             }
     }
 
-    /*
-    public static MinMaxNode iterativeDeepeningNegamax(Board board, double timeLimit) {
-        int depth = 1;
-        MinMaxNode bestNode = null;
-        long startTime = System.currentTimeMillis();
-        //long elapsedTime = System.currentTimeMillis() - startTime;
-        while (System.currentTimeMillis() - startTime < timeLimit) {
-            MinMaxNode.maxDepth = depth;
-            MinMaxNode currentNode = new MaxNode(board, timeLimit - (System.currentTimeMillis() - startTime), startTime );
-            //System.out.println("time : "+ (System.currentTimeMillis() - startTime));
-
-            System.out.println("prof " + depth +"\n");
-            System.out.println("dec "+currentNode.decision[0] + currentNode.decision[1] + currentNode.decision[2] + currentNode.decision[3] + currentNode.decision[4] + currentNode.decision[5]);
-            System.out.println("eval " + currentNode.getEvaluation()+"\n");
-
-            if (bestNode == null || currentNode.getEvaluation() > bestNode.getEvaluation()) {
-                bestNode = currentNode;
-            }
-            depth++;
-        }
-        //System.out.println("eval "+bestNode.getEvaluation());
-        //System.out.println("dec "+bestNode.decision[0] + bestNode.decision[1] + bestNode.decision[2] + bestNode.decision[3] + bestNode.decision[4] + bestNode.decision[5] + "\n");
-        return bestNode;
-    }
-    */
     public static MinMaxNode iterativeDeepeningNegamax(Board board, double timeLimit, int maxDepth) {
         MinMaxNode bestNode = null;
         long startTime = System.currentTimeMillis();
-        //long elapsedTime = System.currentTimeMillis() - startTime;
         for ( MinMaxNode.maxDepth = 0; MinMaxNode.maxDepth <= maxDepth  && System.currentTimeMillis() - startTime < timeLimit; MinMaxNode.maxDepth++ ) {
             bestNode = new MaxNode(board,0, 0);
         }
@@ -128,8 +121,16 @@ public abstract class MinMaxNode
         return bestNode;
     }
 
+    private int test(Board board) {
+        return 0;
+    }
 
-    private int scoreEntireBoardById(Board board) {
+    private int diffScore (Board board)
+    {
+        return board.getScore (MinMaxNode.player) - board.getScore (Board.otherPlayer (MinMaxNode.player));
+    }
+
+    private int best(Board board) {
         int total = 0;
         int[] seedsPlayer = board.getPlayerHoles(), seedsOpponent = board.getOpponentHoles();
 
@@ -153,10 +154,6 @@ public abstract class MinMaxNode
         return (25 * (board.getScore(board.getCurrentPlayer()) - board.getScore(Board.otherPlayer(board.getCurrentPlayer())))) - total;
     }
 
-    public int getDepth()
-    {
-        return depth;
-    }
 
     /** Pire score pour un joueur */
     protected abstract double worst ();
@@ -164,21 +161,19 @@ public abstract class MinMaxNode
     /**
      * Initialisation
      */
-    protected static void initialize (Board board, int maxDepth)
+    protected static void initialize(Board board, int maxDepth, CompetitorBot.HEURISTICS testHeuristic)
     {
         MinMaxNode.maxDepth = maxDepth;
         MinMaxNode.player = board.getCurrentPlayer ();
+        MinMaxNode.testHeuristic = testHeuristic;
     }
 
-    protected static void initializeID (Board board, int maxDepth)
+    protected static void initialize (Board board, CompetitorBot.HEURISTICS testHeuristic)
     {
-        //MinMaxNode.maxDepth = maxDepth;
         MinMaxNode.player = board.getCurrentPlayer ();
+        MinMaxNode.testHeuristic = testHeuristic;
     }
-    private int diffScore (Board board)
-    {
-        return board.getScore (MinMaxNode.player) - board.getScore (Board.otherPlayer (MinMaxNode.player));
-    }
+
 
     /**
      * Mise à jour de alpha

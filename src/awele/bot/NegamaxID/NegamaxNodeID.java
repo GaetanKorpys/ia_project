@@ -1,6 +1,5 @@
 package awele.bot.NegamaxID;
 
-import awele.bot.negatest.NegamaxNode;
 import awele.core.Board;
 import awele.core.InvalidBotException;
 

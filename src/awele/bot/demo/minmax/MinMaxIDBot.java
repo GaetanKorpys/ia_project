@@ -9,17 +9,23 @@ import awele.core.InvalidBotException;
  * @author Alexandre Blansché
  * Bot qui prend ses décisions selon le MinMax
  */
-public class MinMaxBot2 extends DemoBot
+public class MinMaxIDBot extends CompetitorBot
 {
     /** Profondeur maximale */
-    private static final int MAX_DEPTH = 14;
+    private static final int MAX_DEPTH = 8;
+
+    /** Temps d'exécutuion limite */
+    private static final int TIME_LIMIT = 100;
+
+    /** Heuristique choisie */
+    private static final HEURISTICS HEURISTIC = HEURISTICS.DIFF_SCORE;
 	
     /**
      * @throws InvalidBotException
      */
-    public MinMaxBot2() throws InvalidBotException
+    public MinMaxIDBot() throws InvalidBotException
     {
-        this.setBotName ("MinMaxID");
+        this.setBotName ("MinMaxID & " + HEURISTIC);
         this.addAuthor ("Alexandre Blansché");
     }
 
@@ -45,9 +51,8 @@ public class MinMaxBot2 extends DemoBot
     @Override
     public double [] getDecision (Board board)
     {
-        MinMaxNode.initializeID (board, MinMaxBot2.MAX_DEPTH);
-        //return new MaxNode (board, 0, 0).getDecision ();
-        MinMaxNode minMaxNode = MinMaxNode.iterativeDeepeningNegamax(board, 70, MinMaxBot2.MAX_DEPTH);
+        MinMaxNode.initialize(board, HEURISTIC);
+        MinMaxNode minMaxNode = MinMaxNode.iterativeDeepeningNegamax(board, MinMaxIDBot.TIME_LIMIT, MinMaxIDBot.MAX_DEPTH);
         return minMaxNode.getDecision();
     }
 
