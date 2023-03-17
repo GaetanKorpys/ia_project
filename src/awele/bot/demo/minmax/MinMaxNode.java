@@ -25,7 +25,7 @@ public abstract class MinMaxNode
     private double [] decision;
 
     /** Test pour les heuristiques */
-    static CompetitorBot.HEURISTICS testHeuristic;
+    static Bot.HEURISTICS testHeuristic;
 
     /**
      * Constructeur... 
@@ -137,7 +137,9 @@ public abstract class MinMaxNode
         return board.getScore (MinMaxNode.player) - board.getScore (Board.otherPlayer (MinMaxNode.player));
     }
 
+    /** Ne fonctionne parfois pas en dessous de 100ms */
     private int best(Board board) {
+
         int total = 0;
         int[] seedsPlayer = board.getPlayerHoles(), seedsOpponent = board.getOpponentHoles();
 
@@ -158,7 +160,11 @@ public abstract class MinMaxNode
             else if (seedO < 3)
                 total += 36;
         }
-        return (25 * (board.getScore (MinMaxNode.player) - board.getScore(Board.otherPlayer (MinMaxNode.player)))) - total;
+
+
+        return (25 * (board.getScore (board.getCurrentPlayer()) - board.getScore(Board.otherPlayer (board.getCurrentPlayer())))) - total;
+
+        //return (25 * (board.getScore (MinMaxNode.player) - board.getScore(Board.otherPlayer (MinMaxNode.player)))) - total;
     }
 
 

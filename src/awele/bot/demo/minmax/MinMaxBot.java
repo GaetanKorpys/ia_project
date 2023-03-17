@@ -1,8 +1,11 @@
 package awele.bot.demo.minmax;
 
 import awele.bot.CompetitorBot;
+import awele.bot.DemoBot;
 import awele.core.Board;
 import awele.core.InvalidBotException;
+
+import java.util.Date;
 
 /**
  * @author Alexandre Blansché
@@ -14,7 +17,7 @@ public class MinMaxBot extends CompetitorBot
     private static final int MAX_DEPTH = 9;
 
     /** Heuristique choisie */
-    private static final HEURISTICS HEURISTIC = HEURISTICS.DIFF_SCORE;
+    private static final HEURISTICS HEURISTIC = HEURISTICS.BEST;
 
 
     /**

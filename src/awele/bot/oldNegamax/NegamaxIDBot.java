@@ -1,30 +1,34 @@
-package awele.bot.test;
+package awele.bot.oldNegamax;
 
 import awele.bot.CompetitorBot;
 import awele.bot.DemoBot;
+import awele.bot.demo.minmax.MinMaxIDBot;
+import awele.bot.demo.minmax.MinMaxNode;
 import awele.core.Board;
 import awele.core.InvalidBotException;
-
-import java.util.Date;
 
 /**
  * @author Alexandre Blansché
  * Bot qui prend ses décisions selon le MinMax
  */
 public class NegamaxIDBot extends DemoBot {
-    /**
-     * Profondeur maximale
-     */
-    private static final int MAX_DEPTH = 8;
 
+    /** Profondeur maximale */
+    private static final int MAX_DEPTH = 9;
+
+    /** Temps d'exécutuion limite */
     private static final int TIME_LIMIT = 100;
+
+    /** Heuristique choisie */
+    private static final HEURISTICS HEURISTIC = HEURISTICS.BEST;
 
     /**
      * @throws InvalidBotException
      */
     public NegamaxIDBot() throws InvalidBotException {
-        this.setBotName("NegaMax V3 Profondeur = " + MAX_DEPTH);
-        this.addAuthor("Negamax");
+        this.setBotName ("OLD NegamaxID & " + HEURISTIC + " & " + MAX_DEPTH);
+        this.addAuthor ("Gaetan Korpys");
+        this.addAuthor ("Theo Rousseau");
     }
 
     /**
@@ -32,7 +36,7 @@ public class NegamaxIDBot extends DemoBot {
      * Cette fonction est appelée avant chaque affrontement
      */
     @Override
-    public void initialize() {}
+    public void initialize() { }
 
     /**
      * Pas d'apprentissage
@@ -45,8 +49,9 @@ public class NegamaxIDBot extends DemoBot {
      */
     @Override
     public double[] getDecision(Board board) {
-        return NegamaxNode.iterativeDeepeningNegamax(board, board.getCurrentPlayer(), Board.otherPlayer(board.getCurrentPlayer()), NegamaxIDBot.TIME_LIMIT,  NegamaxIDBot.MAX_DEPTH).getDecision();
-
+        NegamaxNode.initialize(HEURISTIC);
+        NegamaxNode negamaxBot = NegamaxNode.iterativeDeepeningNegamax(board, NegamaxIDBot.TIME_LIMIT, NegamaxIDBot.MAX_DEPTH);
+        return negamaxBot.getDecision();
     }
 
     /**
