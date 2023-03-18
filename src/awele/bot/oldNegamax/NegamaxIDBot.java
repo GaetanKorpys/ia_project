@@ -49,9 +49,10 @@ public class NegamaxIDBot extends DemoBot {
      */
     @Override
     public double[] getDecision(Board board) {
-        NegamaxNode.initialize(HEURISTIC);
-        NegamaxNode negamaxBot = NegamaxNode.iterativeDeepeningNegamax(board, NegamaxIDBot.TIME_LIMIT, NegamaxIDBot.MAX_DEPTH);
-        return negamaxBot.getDecision();
+        NegamaxNode.initialize(NegamaxIDBot.MAX_DEPTH, HEURISTIC);
+        return new NegamaxNode(board, 0, board.getCurrentPlayer(), Board.otherPlayer(board.getCurrentPlayer()), -Double.MAX_VALUE, Double.MAX_VALUE).getDecision();
+        //NegamaxNode negamaxBot = NegamaxNode.iterativeDeepeningNegamax(board, NegamaxIDBot.TIME_LIMIT, NegamaxIDBot.MAX_DEPTH);
+
     }
 
     /**

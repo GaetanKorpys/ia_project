@@ -55,7 +55,7 @@ public abstract class MinMaxNode
                     int score = copy.playMoveSimulationScore (copy.getCurrentPlayer (), decision);
                     copy = copy.playMoveSimulationBoard (copy.getCurrentPlayer (), decision);
                     /* Si la nouvelle situation de jeu est un coup qui met fin à la partie,
-                       on évalue la situation actuelle */   
+                       on évalue la situation actuelle */
                     if ((score < 0) || (copy.getScore (Board.otherPlayer (copy.getCurrentPlayer ())) >= 25) || (copy.getNbSeeds () <= 6) ){
                         switch (testHeuristic){
                             case DIFF_SCORE:
@@ -98,12 +98,13 @@ public abstract class MinMaxNode
                     /* L'évaluation courante du noeud est mise à jour, selon le type de noeud (MinNode ou MaxNode) */
                     this.evaluation = this.minmax (this.decision [i], this.evaluation);
 
-                    if(this.alphabeta(this.evaluation, alpha, beta))
-                        break;
+
 
                     /* Coupe alpha-beta */ 
                     if (depth > 0)
                     {
+                        if(this.alphabeta(this.evaluation, alpha, beta))
+                            break;
                         alpha = this.alpha (this.evaluation, alpha);
                         beta = this.beta (this.evaluation, beta);
                     }                        
@@ -139,7 +140,6 @@ public abstract class MinMaxNode
 
     /** Ne fonctionne parfois pas en dessous de 100ms */
     private int best(Board board) {
-
         int total = 0;
         int[] seedsPlayer = board.getPlayerHoles(), seedsOpponent = board.getOpponentHoles();
 
@@ -162,7 +162,7 @@ public abstract class MinMaxNode
         }
 
 
-        return (25 * (board.getScore (board.getCurrentPlayer()) - board.getScore(Board.otherPlayer (board.getCurrentPlayer())))) - total;
+        return (25 * (board.getScore (Board.otherPlayer (board.getCurrentPlayer())) - board.getScore(board.getCurrentPlayer())) ) - total;
 
         //return (25 * (board.getScore (MinMaxNode.player) - board.getScore(Board.otherPlayer (MinMaxNode.player)))) - total;
     }

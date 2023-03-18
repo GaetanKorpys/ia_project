@@ -1,5 +1,6 @@
 package awele.bot.test;
 
+import awele.bot.CompetitorBot;
 import awele.bot.DemoBot;
 import awele.core.Board;
 import awele.core.InvalidBotException;
@@ -8,9 +9,9 @@ import awele.core.InvalidBotException;
  * @author Alexandre Blansché
  * Bot qui prend ses décisions selon le MinMax
  */
-public class NegamaxBot extends DemoBot {
+public class NegamaxBot extends CompetitorBot {
     /** Profondeur maximale */
-    private static final int MAX_DEPTH = 9;
+    private static final int MAX_DEPTH = 10;
 
     /** Heuristique choisie */
     private static final HEURISTICS HEURISTIC = HEURISTICS.BEST;
@@ -19,7 +20,7 @@ public class NegamaxBot extends DemoBot {
      * @throws InvalidBotException
      */
     public NegamaxBot() throws InvalidBotException {
-        this.setBotName("NegaMax & " + HEURISTIC + " & " + MAX_DEPTH);
+        this.setBotName("NEW NegaMax & " + HEURISTIC + " & " + MAX_DEPTH);
         this.addAuthor("Gaetan Korpys");
         this.addAuthor("Theo Rousseau");
     }
@@ -42,8 +43,8 @@ public class NegamaxBot extends DemoBot {
      */
     @Override
     public double[] getDecision(Board board) {
-        WrongNegamaxNode.initialize(board, NegamaxBot.MAX_DEPTH, HEURISTIC);
-        return new WrongNegamaxNode(board, 0, board.getCurrentPlayer(), Board.otherPlayer(board.getCurrentPlayer()), -Double.MAX_VALUE, Double.MAX_VALUE).getDecision();
+        NegamaxNode.initialize(board, NegamaxBot.MAX_DEPTH, HEURISTIC);
+        return new NegamaxNode(board, 0, -Double.MAX_VALUE, Double.MAX_VALUE).getDecision();
     }
 
     /**

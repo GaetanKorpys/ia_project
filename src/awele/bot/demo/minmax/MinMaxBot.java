@@ -11,7 +11,7 @@ import java.util.Date;
  * @author Alexandre Blansché
  * Bot qui prend ses décisions selon le MinMax
  */
-public class MinMaxBot extends CompetitorBot
+public class MinMaxBot extends DemoBot
 {
     /** Profondeur maximale */
     private static final int MAX_DEPTH = 9;

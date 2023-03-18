@@ -1,8 +1,5 @@
-package awele.bot.oldNegamax;
+package awele.bot.demo.A;
 
-import awele.bot.Bot;
-import awele.bot.demo.minmax.MaxNode;
-import awele.bot.demo.minmax.MinMaxNode;
 import awele.core.Board;
 import awele.core.InvalidBotException;
 
@@ -14,21 +11,21 @@ public class NegamaxNode {
 	 * Profondeur maximale
 	 */
 	private static int maxDepth;
-
+	
+	
 	private final double depth;
 	
 	/**
 	 * L'évaluation du noeud
 	 */
 	private double evaluation;
-
+	
+	
 	/**
 	 * Évaluation des coups selon MinMax
 	 */
 	private final double[] decision;
-
-	/** Test pour les heuristiques */
-	static Bot.HEURISTICS testHeuristic;
+	
 	
 	/**
 	 * Constructeur...
@@ -40,6 +37,7 @@ public class NegamaxNode {
 	public NegamaxNode(Board board, double depth, int myTour, int opponentTour, double a, double b) {
 		this.depth = depth;
 		/* On crée index de notre situation */
+		
 		
 		/* On crée un tableau des évaluations des coups à jouer pour chaque situation possible */
 		this.decision = new double[Board.NB_HOLES];
@@ -61,20 +59,8 @@ public class NegamaxNode {
 					
 					
 					if ((copy.getScore(myTour) < 0) || (copy.getScore(opponentTour) >= 25)
-							|| (copy.getNbSeeds() <= 6) || !(depth < NegamaxNode.maxDepth)){
-						switch (testHeuristic){
-							case DIFF_SCORE:
-								this.decision[i] = diffScore(copy, myTour, opponentTour);
-								break;
-							case BEST:
-								this.decision[i] = best(copy, myTour, opponentTour);
-								break;
-							case TEST:
-								this.decision[i] = test(copy, myTour, opponentTour);
-								break;
-						}
-					}
-
+							|| (copy.getNbSeeds() <= 6) || !(depth < NegamaxNode.maxDepth))
+						this.decision[i] = scoreEntireBoardById(copy, myTour, opponentTour);
 						/* Sinon, on explore les coups suivants */
 					else {
 						
@@ -86,7 +72,11 @@ public class NegamaxNode {
 						
 						/* On récupère l'évaluation du noeud fils */
 						this.decision[i] = -child.getEvaluation();
-
+						
+						/*
+						 * Sinon (si la profondeur maximale est atteinte), on évalue la situation
+						 * actuelle
+						 */
 						
 					}
 					/*
@@ -110,42 +100,17 @@ public class NegamaxNode {
 			}
 		}
 	}
-
-	public static NegamaxNode iterativeDeepeningNegamax(Board board, double timeLimit, int maxDepth) {
-		NegamaxNode bestNode = null;
-		long startTime = System.currentTimeMillis();
-		for ( NegamaxNode.maxDepth = 0; NegamaxNode.maxDepth <= maxDepth  /*&& System.currentTimeMillis() - startTime < timeLimit*/; NegamaxNode.maxDepth++ ) {
-			bestNode = new NegamaxNode(board, 0, board.getCurrentPlayer(), Board.otherPlayer(board.getCurrentPlayer()), -Double.MAX_VALUE, Double.MAX_VALUE);
-		}
-
-		//bestNode = new MaxNode(board, 0, 0);
-		return bestNode;
-	}
+	
 	
 	/**
 	 * Initialisation
 	 */
-	protected static void initialize(int maxDepth, Bot.HEURISTICS testHeuristic) {
+	protected static void initialize(int maxDepth) {
 		NegamaxNode.maxDepth = maxDepth;
-		NegamaxNode.testHeuristic = testHeuristic;
-	}
-
-	protected static void initialize (Bot.HEURISTICS testHeuristic)
-	{
-		NegamaxNode.testHeuristic = testHeuristic;
-	}
-
-	private int test (Board board, int myTour, int opponentTour)
-	{
-		return 0;
-	}
-
-	private int diffScore (Board board, int myTour, int opponentTour)
-	{
-		return board.getScore (myTour) - board.getScore (opponentTour);
 	}
 	
-	private int best(Board board, int myTour, int opponentTour) {
+	
+	private int scoreEntireBoardById(Board board, int myTour, int opponentTour) {
 		int total = 0;
 		int[] seedsPlayer = board.getPlayerHoles(), seedsOpponent = board.getOpponentHoles();
 		
@@ -166,19 +131,7 @@ public class NegamaxNode {
 			else if (seedO < 3)
 				total += 36;
 		}
-
-
-
-
-
-		//if(myTour != board.getCurrentPlayer())
-			//System.out.println("AAAAAA");
-
-		/** Fonctionne , gange contre tous les bots*/
 		return (25 * (board.getScore(myTour) - board.getScore(opponentTour))) - total;
-
-		/** Ne fonctionne pas , perd contre certains bots -> incohérence */
-		//return (25 * (board.getScore(board.getCurrentPlayer()) - board.getScore(Board.otherPlayer(board.getCurrentPlayer())))) - total;
 	}
 	
 	
