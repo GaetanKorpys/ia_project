@@ -1,8 +1,12 @@
 package awele.bot.oldNegamax;
 
 import awele.bot.CompetitorBot;
+import awele.bot.DemoBot;
 import awele.core.Board;
 import awele.core.InvalidBotException;
+
+import javax.swing.*;
+import java.util.Date;
 
 /**
  * @author Alexandre Blansché
@@ -10,7 +14,7 @@ import awele.core.InvalidBotException;
  */
 public class NegamaxBot extends CompetitorBot {
     /** Profondeur maximale */
-    private static final int MAX_DEPTH = 10;
+    private static final int MAX_DEPTH = 11;
 
     /** Temps d'exécutuion limite */
     private static final int TIME_LIMIT = 100;

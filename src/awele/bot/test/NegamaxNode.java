@@ -93,13 +93,24 @@ public class NegamaxNode {
 
     }
 
+    public static NegamaxNode iterativeDeepeningNegamax(Board board, double timeLimit, int maxDepth) {
+        NegamaxNode bestNode = null;
+        long startTime = System.currentTimeMillis();
+        for (NegamaxNode.maxDepth = 0; NegamaxNode.maxDepth <= maxDepth  && System.currentTimeMillis() - startTime < timeLimit; NegamaxNode.maxDepth++ ) {
+            bestNode = new NegamaxNode(board, 0, -Double.MAX_VALUE, Double.MAX_VALUE);
+        }
+
+        //bestNode = new MaxNode(board, 0, 0);
+        return bestNode;
+    }
+
     private int test(Board board) {
         return 0;
     }
 
     private int diffScore (Board board)
     {
-        return board.getScore (NegamaxNode.player) - board.getScore (Board.otherPlayer (NegamaxNode.player));
+        return board.getScore (Board.otherPlayer(board.getCurrentPlayer())) - board.getScore (board.getCurrentPlayer());
     }
 
     /** Ne fonctionne parfois pas en dessous de 100ms */

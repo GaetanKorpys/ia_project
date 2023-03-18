@@ -114,7 +114,7 @@ public class NegamaxNode {
 	public static NegamaxNode iterativeDeepeningNegamax(Board board, double timeLimit, int maxDepth) {
 		NegamaxNode bestNode = null;
 		long startTime = System.currentTimeMillis();
-		for ( NegamaxNode.maxDepth = 0; NegamaxNode.maxDepth <= maxDepth  /*&& System.currentTimeMillis() - startTime < timeLimit*/; NegamaxNode.maxDepth++ ) {
+		for ( NegamaxNode.maxDepth = 0; NegamaxNode.maxDepth <= maxDepth  && System.currentTimeMillis() - startTime < timeLimit; NegamaxNode.maxDepth++ ) {
 			bestNode = new NegamaxNode(board, 0, board.getCurrentPlayer(), Board.otherPlayer(board.getCurrentPlayer()), -Double.MAX_VALUE, Double.MAX_VALUE);
 		}
 

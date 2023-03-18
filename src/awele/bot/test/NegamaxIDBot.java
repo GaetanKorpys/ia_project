@@ -1,4 +1,4 @@
-package awele.bot.oldNegamax;
+package awele.bot.test;
 
 import awele.bot.CompetitorBot;
 import awele.bot.DemoBot;
@@ -26,7 +26,7 @@ public class NegamaxIDBot extends CompetitorBot {
      * @throws InvalidBotException
      */
     public NegamaxIDBot() throws InvalidBotException {
-        this.setBotName ("OLD NegamaxID & " + HEURISTIC + " & " + MAX_DEPTH);
+        this.setBotName ("NEW NegamaxID & " + HEURISTIC + " & " + MAX_DEPTH);
         this.addAuthor ("Gaetan Korpys");
         this.addAuthor ("Theo Rousseau");
     }
@@ -49,7 +49,7 @@ public class NegamaxIDBot extends CompetitorBot {
      */
     @Override
     public double[] getDecision(Board board) {
-        NegamaxNode.initialize(HEURISTIC);
+        NegamaxNode.initialize(board, HEURISTIC);
         //return new NegamaxNode(board, 0, board.getCurrentPlayer(), Board.otherPlayer(board.getCurrentPlayer()), -Double.MAX_VALUE, Double.MAX_VALUE).getDecision();
         return NegamaxNode.iterativeDeepeningNegamax(board, NegamaxIDBot.TIME_LIMIT, NegamaxIDBot.MAX_DEPTH).getDecision();
 
