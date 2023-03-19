@@ -114,11 +114,10 @@ public class NegamaxNode {
 	public static NegamaxNode iterativeDeepeningNegamax(Board board, double timeLimit, int maxDepth) {
 		NegamaxNode bestNode = null;
 		long startTime = System.currentTimeMillis();
-		for ( NegamaxNode.maxDepth = 0; NegamaxNode.maxDepth <= maxDepth  && System.currentTimeMillis() - startTime < timeLimit; NegamaxNode.maxDepth++ ) {
+		for ( NegamaxNode.maxDepth = 0; /*NegamaxNode.maxDepth <= maxDepth  &&*/ System.currentTimeMillis() - startTime < timeLimit; NegamaxNode.maxDepth++ ) {
 			bestNode = new NegamaxNode(board, 0, board.getCurrentPlayer(), Board.otherPlayer(board.getCurrentPlayer()), -Double.MAX_VALUE, Double.MAX_VALUE);
 		}
 
-		//bestNode = new MaxNode(board, 0, 0);
 		return bestNode;
 	}
 	
@@ -152,14 +151,14 @@ public class NegamaxNode {
 		for (int i = 0; i < 6; i++) {
 			int seedP = seedsPlayer[i];
 			int seedO = seedsOpponent[i];
-			if (seedP > 12)
+			if (seedP >= 12)
 				total += 28;
 			else if (seedP == 0)
 				total -= 54;
 			else if (seedP < 3)
 				total -= 36;
 			
-			if (seedO > 12)
+			if (seedO >= 12)
 				total -= 28;
 			else if (seedO == 0)
 				total += 54;

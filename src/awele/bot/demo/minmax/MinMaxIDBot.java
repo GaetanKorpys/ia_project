@@ -12,7 +12,7 @@ import awele.core.InvalidBotException;
 public class MinMaxIDBot extends DemoBot
 {
     /** Profondeur maximale */
-    private static final int MAX_DEPTH = 9;
+    private static final int MAX_DEPTH = 8;
 
     /** Temps d'exécutuion limite */
     private static final int TIME_LIMIT = 100;
@@ -51,8 +51,14 @@ public class MinMaxIDBot extends DemoBot
     @Override
     public double [] getDecision (Board board)
     {
+        /*
         MinMaxNode.initialize(board, HEURISTIC);
         MinMaxNode minMaxNode = MinMaxNode.iterativeDeepeningNegamax(board, MinMaxIDBot.TIME_LIMIT, MinMaxIDBot.MAX_DEPTH);
+        return minMaxNode.getDecision();
+
+         */
+        MinMaxNode.initialize (board, MinMaxIDBot.MAX_DEPTH, HEURISTIC);
+        MinMaxNode minMaxNode = new MaxNode(board,0,0);
         return minMaxNode.getDecision();
     }
 

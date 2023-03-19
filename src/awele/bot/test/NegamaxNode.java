@@ -1,8 +1,6 @@
 package awele.bot.test;
 
 import awele.bot.Bot;
-import awele.bot.demo.minmax.MinMaxNode;
-import awele.bot.oldNegamax.NegamaxBot;
 import awele.core.Board;
 import awele.core.InvalidBotException;
 
@@ -23,6 +21,9 @@ public class NegamaxNode {
     /** Test pour les heuristiques */
     static Bot.HEURISTICS testHeuristic;
 
+    /** Tableau d'index de décision trié dans l'ordre décroissant */
+    private static double [] sortDescendingDecision;
+
 
     /** Algorithme récursif */
     public NegamaxNode(Board board, int depth, double alpha, double beta)
@@ -32,15 +33,18 @@ public class NegamaxNode {
         /* Initialisation de l'évaluation courante */
         this.evaluation = -Double.MAX_VALUE;
 
+
         /* On parcourt toutes les coups possibles */
         for(int i = 0; i < Board.NB_HOLES; i++)
         {
             /* Si le coup est jouable */
-            if(board.getPlayerHoles()[i] != 0)
+            if(board.getPlayerHoles()[(int) sortDescendingDecision[i]] != 0) //(int) sortDescendingDecision[i]
             {
+                //if(board.getPlayerHoles()[i] != board.getPlayerHoles()[(int) sortDescendingDecision[i]])
+                    //System.out.println("AAAA");
                 /* Sélection du coup à jouer */
                 double [] decision = new double [Board.NB_HOLES];
-                decision [i] = 1;
+                decision [(int) sortDescendingDecision[i]] = 1;//(int) sortDescendingDecision[i]
 
                 try {
 
@@ -93,14 +97,48 @@ public class NegamaxNode {
 
     }
 
+    public static double[] sortIndexDescending(double[] arr) {
+        int n = arr.length;
+        double[] index = new double[n];
+        for (int i = 0; i < n; i++) {
+            index[i] = i;
+        }
+        for (int i = 0; i < n-1; i++) {
+            int maxIdx = i;
+            for (int j = i+1; j < n; j++) {
+                if (arr[j] > arr[maxIdx]) {
+                    maxIdx = j;
+                }
+            }
+            double tmp = arr[i];
+            arr[i] = arr[maxIdx];
+            arr[maxIdx] = tmp;
+            double tmpIdx = index[i];
+            index[i] = index[maxIdx];
+            index[maxIdx] = tmpIdx;
+        }
+        return index;
+    }
+
+
+
     public static NegamaxNode iterativeDeepeningNegamax(Board board, double timeLimit, int maxDepth) {
+
         NegamaxNode bestNode = null;
         long startTime = System.currentTimeMillis();
-        for (NegamaxNode.maxDepth = 0; NegamaxNode.maxDepth <= maxDepth  && System.currentTimeMillis() - startTime < timeLimit; NegamaxNode.maxDepth++ ) {
+        for (NegamaxNode.maxDepth = 0; /*NegamaxNode.maxDepth <= maxDepth  && */System.currentTimeMillis() - startTime < timeLimit; NegamaxNode.maxDepth++ ) {
             bestNode = new NegamaxNode(board, 0, -Double.MAX_VALUE, Double.MAX_VALUE);
+
+
+            //for(int i = 0; i < Board.NB_HOLES; i++)
+              //  System.out.println(bestNode.getDecision()[i]);
+
+            /** Move ordering */
+            //sortDescendingDecision = sortIndexDescending(bestNode.getDecision());
+            //for(int i = 0; i < Board.NB_HOLES; i++)
+              //  System.out.println(sortDescendingDecision[i]);
         }
 
-        //bestNode = new MaxNode(board, 0, 0);
         return bestNode;
     }
 
@@ -110,7 +148,7 @@ public class NegamaxNode {
 
     private int diffScore (Board board)
     {
-        return board.getScore (Board.otherPlayer(board.getCurrentPlayer())) - board.getScore (board.getCurrentPlayer());
+        return board.getScore (NegamaxNode.player) - board.getScore (Board.otherPlayer(NegamaxNode.player));
     }
 
     /** Ne fonctionne parfois pas en dessous de 100ms */
@@ -137,9 +175,16 @@ public class NegamaxNode {
                 total += 36;
         }
 
-        return (25 * (board.getScore (Board.otherPlayer(board.getCurrentPlayer())) - board.getScore(board.getCurrentPlayer()))) - total;
+        //int res2 = (25 * (board.getScore (Board.otherPlayer(board.getCurrentPlayer())) - board.getScore(board.getCurrentPlayer()))) - total;
+        int res = (25 * (board.getScore (NegamaxNode.player) - board.getScore(Board.otherPlayer (NegamaxNode.player)))) - total;
+        /*
+        int res3 = (25 * (board.getScore (Board.otherPlayer (NegamaxNode.player))) - board.getScore((NegamaxNode.player))) - total;
 
-        //return (25 * (board.getScore (MinMaxNode.player) - board.getScore(Board.otherPlayer (MinMaxNode.player)))) - total;
+        System.out.println(res);
+        System.out.println(res2);
+        System.out.println(res3+"\n");
+        */
+        return  res;
     }
 
     protected static void initialize(Board board, int maxDepth, Bot.HEURISTICS testHeuristic)
@@ -147,12 +192,20 @@ public class NegamaxNode {
         NegamaxNode.maxDepth = maxDepth;
         NegamaxNode.player = board.getCurrentPlayer ();
         NegamaxNode.testHeuristic = testHeuristic;
+        /** On instancie le tableau avec une recherche de gauche à droite au départ */
+        sortDescendingDecision = new double[Board.NB_HOLES];
+        for(int i = 0; i < Board.NB_HOLES; i++)
+            sortDescendingDecision[i] = i;
     }
 
     protected static void initialize (Board board, Bot.HEURISTICS testHeuristic)
     {
         NegamaxNode.player = board.getCurrentPlayer ();
         NegamaxNode.testHeuristic = testHeuristic;
+        /** On instancie le tableau avec une recherche de gauche à droite au départ */
+        sortDescendingDecision = new double[Board.NB_HOLES];
+        for(int i = 0; i < Board.NB_HOLES; i++)
+            sortDescendingDecision[i] = i;
     }
 
     double getEvaluation ()

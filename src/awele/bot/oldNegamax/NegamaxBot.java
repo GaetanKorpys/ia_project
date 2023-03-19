@@ -14,7 +14,7 @@ import java.util.Date;
  */
 public class NegamaxBot extends CompetitorBot {
     /** Profondeur maximale */
-    private static final int MAX_DEPTH = 11;
+    private static final int MAX_DEPTH = 10;
 
     /** Temps d'exécutuion limite */
     private static final int TIME_LIMIT = 100;
