@@ -9,9 +9,9 @@ import awele.core.InvalidBotException;
  * @author Alexandre Blansché
  * Bot qui prend ses décisions selon le MinMax
  */
-public class NegamaxBot extends CompetitorBot {
+public class NegamaxBot extends DemoBot {
     /** Profondeur maximale */
-    private static final int MAX_DEPTH = 10;
+    private static final int MAX_DEPTH = 9;
 
     /** Heuristique choisie */
     private static final HEURISTICS HEURISTIC = HEURISTICS.BEST;
@@ -20,7 +20,7 @@ public class NegamaxBot extends CompetitorBot {
      * @throws InvalidBotException
      */
     public NegamaxBot() throws InvalidBotException {
-        this.setBotName("NEW NegaMax & " + HEURISTIC + " & " + MAX_DEPTH);
+        this.setBotName("Bot leur les fesses");
         this.addAuthor("Gaetan Korpys");
         this.addAuthor("Theo Rousseau");
     }

@@ -1,46 +1,106 @@
 Mémoire totale : 4,0 GiB
-3 classes ont été trouvées
+4 classes ont été trouvées
+class awele.bot.demo.minmax.MinMaxBot
 class awele.bot.test.NegamaxIDBot
+class awele.bot.BotLeurLesFesses.NegamaxIDBot
 class awele.bot.demo.A.NegamaxBot
-class awele.bot.test.NegamaxBot
 
-Bot 1/3
+Bot 1/4
+Classe : awele.bot.demo.minmax.MinMaxBot
+Nom du bot : MinMax & DIFF_SCORE & 9
+Temps d'apprentissage : 00:00:00.000
+Durée d'une prise de décision : 00:00:00.065
+Usage mémoire : 8,3 KiB
+Usage mémoire maximum : 156,0 MiB
+
+Bot 2/4
 Classe : awele.bot.test.NegamaxIDBot
-Nom du bot : NEW NegamaxID & BEST & 14
+Nom du bot : Bot leur les fesses ID
 Temps d'apprentissage : 00:00:00.000
-Durée d'une prise de décision : 00:00:00.173
-Usage mémoire : 20,6 KiB
-Usage mémoire maximum : 197,1 MiB
+Durée d'une prise de décision : 00:00:00.147
+Usage mémoire : 12,8 KiB
+Usage mémoire maximum : 124,0 MiB
 
-Bot 2/3
+Bot 3/4
+Classe : awele.bot.BotLeurLesFesses.NegamaxIDBot
+Nom du bot : Bot leur les fesses
+Temps d'apprentissage : 00:00:00.000
+Durée d'une prise de décision : 00:00:00.174
+Usage mémoire : 1,0 KiB
+Usage mémoire maximum : 180,0 MiB
+
+Bot 4/4
 Classe : awele.bot.demo.A.NegamaxBot
-Nom du bot : NegaMax V3 Profondeur = 10
+Nom du bot : NegaMax V3 Profondeur = 9
 Temps d'apprentissage : 00:00:00.000
-Durée d'une prise de décision : 00:00:00.072
-Usage mémoire : 840 B
-Usage mémoire maximum : 163,0 MiB
+Durée d'une prise de décision : 00:00:00.038
+Usage mémoire : 984 B
+Usage mémoire maximum : 127,0 MiB
 
-Bot 3/3
-Classe : awele.bot.test.NegamaxBot
-Nom du bot : NEW NegaMax & BEST & 10
-Temps d'apprentissage : 00:00:00.000
-Durée d'une prise de décision : 00:00:00.062
-Usage mémoire : 680 B
-Usage mémoire maximum : 154,0 MiB
-
-3 bots ont été instanciés
-Durée du chargement : 00:00:34.467
+4 bots ont été instanciés
+Durée du chargement : 00:00:18.017
 Mémoire utilisée : 1,5 MiB
 
 Que le championnat commence !
 
-Affrontement 1/3
-NEW NegamaxID & BEST & 14 vs. NegaMax V3 Profondeur = 10
-Score : 0.0 - 3.0
-NegaMax V3 Profondeur = 10 a gagné
-Nombre de coups joués : 38.9 par match
-Durée : 00:00:04.589 par match
+Affrontement 1/6
+MinMax & DIFF_SCORE & 9 vs. Bot leur les fesses ID
+Score : 0.12 - 2.88
+Bot leur les fesses ID a gagné
+Nombre de coups joués : 113.72 par match
+Durée : 00:00:10.553 par match
 Mémoire utilisée : 1,4 MiB
 
-Affrontement 2/3
-NEW NegamaxID & BEST & 14 vs. NEW NegaMax & BEST & 10
+Affrontement 2/6
+MinMax & DIFF_SCORE & 9 vs. Bot leur les fesses
+Score : 0.0 - 3.0
+Bot leur les fesses a gagné
+Nombre de coups joués : 87.4 par match
+Durée : 00:00:09.318 par match
+Mémoire utilisée : 1,4 MiB
+
+Affrontement 3/6
+MinMax & DIFF_SCORE & 9 vs. NegaMax V3 Profondeur = 9
+Score : 0.04 - 2.92
+NegaMax V3 Profondeur = 9 a gagné
+Nombre de coups joués : 105.82 par match
+Durée : 00:00:03.425 par match
+Mémoire utilisée : 1,4 MiB
+
+Affrontement 4/6
+Bot leur les fesses ID vs. Bot leur les fesses
+Score : 1.04 - 1.76
+Bot leur les fesses a gagné
+Nombre de coups joués : 120.26 par match
+Durée : 00:00:18.215 par match
+Mémoire utilisée : 1,4 MiB
+
+Affrontement 5/6
+Bot leur les fesses ID vs. NegaMax V3 Profondeur = 9
+Score : 2.04 - 0.96
+Bot leur les fesses ID a gagné
+Nombre de coups joués : 119.7 par match
+Durée : 00:00:09.776 par match
+Mémoire utilisée : 1,4 MiB
+
+Affrontement 6/6
+Bot leur les fesses vs. NegaMax V3 Profondeur = 9
+Score : 2.16 - 0.84
+Bot leur les fesses a gagné
+Nombre de coups joués : 113.44 par match
+Durée : 00:00:10.683 par match
+Mémoire utilisée : 1,4 MiB
+
+Durée du championnat : 00:51:38.815
+
+Scores finaux :
+MinMax & DIFF_SCORE & 9 : 0.16
+Bot leur les fesses ID : 5.96
+Bot leur les fesses : 6.92
+NegaMax V3 Profondeur = 9 : 4.72
+
+Rangs :
+1. Bot leur les fesses : 6.92
+2. Bot leur les fesses ID : 5.96
+3. NegaMax V3 Profondeur = 9 : 4.72
+4. MinMax & DIFF_SCORE & 9 : 0.16

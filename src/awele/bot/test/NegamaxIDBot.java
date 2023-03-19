@@ -17,7 +17,7 @@ public class NegamaxIDBot extends CompetitorBot {
     private static final int MAX_DEPTH = 14;
 
     /** Temps d'exécutuion limite */
-    private static final int TIME_LIMIT = 115;
+    private static final int TIME_LIMIT = 100;
 
     /** Heuristique choisie */
     private static final HEURISTICS HEURISTIC = HEURISTICS.BEST;
@@ -26,7 +26,7 @@ public class NegamaxIDBot extends CompetitorBot {
      * @throws InvalidBotException
      */
     public NegamaxIDBot() throws InvalidBotException {
-        this.setBotName ("NEW NegamaxID & " + HEURISTIC + " & " + MAX_DEPTH);
+        this.setBotName ("Bot leur les fesses ID");
         this.addAuthor ("Gaetan Korpys");
         this.addAuthor ("Theo Rousseau");
     }
@@ -50,7 +50,6 @@ public class NegamaxIDBot extends CompetitorBot {
     @Override
     public double[] getDecision(Board board) {
         NegamaxNode.initialize(board, HEURISTIC);
-        //return new NegamaxNode(board, 0, board.getCurrentPlayer(), Board.otherPlayer(board.getCurrentPlayer()), -Double.MAX_VALUE, Double.MAX_VALUE).getDecision();
         return NegamaxNode.iterativeDeepeningNegamax(board, NegamaxIDBot.TIME_LIMIT, NegamaxIDBot.MAX_DEPTH).getDecision();
 
     }

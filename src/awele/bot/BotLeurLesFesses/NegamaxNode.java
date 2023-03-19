@@ -1,4 +1,4 @@
-package awele.bot.test;
+package awele.bot.BotLeurLesFesses;
 
 import awele.bot.Bot;
 import awele.core.Board;
@@ -22,11 +22,27 @@ public class NegamaxNode {
     private double [] decision;
 
     /** Test pour les heuristiques */
-    static Bot.HEURISTICS testHeuristic;
+    //static Bot.HEURISTICS testHeuristic;
 
-    /** Tableau d'index de décision trié dans l'ordre décroissant */
+    /** Tableau d'index de décision pour trier les coups afin d'optimiser l'élagae */
     private static double [] sortDecision;
 
+    /** Utilisée pour la fonction d'évaluation */
+    private int countConsecutiveHolesWithOneOrTwoSeeds(int[] holes) {
+        int count = 0;
+        int consecutive = 0;
+        for (int i = 0; i < holes.length; i++) {
+            if (holes[i] <= 2) {
+                consecutive++;
+                if (consecutive > count) {
+                    count = consecutive;
+                }
+            } else {
+                consecutive = 0;
+            }
+        }
+        return count;
+    }
 
     /** Algorithme Negamax récursif */
     public NegamaxNode(Board board, int depth, double alpha, double beta, int myBotTurn)
@@ -71,7 +87,7 @@ public class NegamaxNode {
                                 break;
                         }
                         */
-                        this.decision[i] = this.best(played, myBotTurn);
+                        this.decision[i] = this.heuristic(played, myBotTurn);
                     }
                     else
                     {
@@ -104,91 +120,27 @@ public class NegamaxNode {
 
     }
 
-    private int countConsecutiveHolesWithOneOrTwoSeeds(int[] holes) {
-        int count = 0;
-        int consecutive = 0;
-        for (int i = 0; i < holes.length; i++) {
-            if (holes[i] <= 2) {
-                consecutive++;
-                if (consecutive > count) {
-                    count = consecutive;
-                }
-            } else {
-                consecutive = 0;
-            }
-        }
-        return count;
-    }
-
-    public static double[] sortIndexDescending(double[] arr) {
-        int n = arr.length;
-        double[] index = new double[n];
-        for (int i = 0; i < n; i++) {
-            index[i] = i;
-        }
-        for (int i = 0; i < n-1; i++) {
-            int maxIdx = i;
-            for (int j = i+1; j < n; j++) {
-                if (arr[j] > arr[maxIdx]) {
-                    maxIdx = j;
-                }
-            }
-            double tmp = arr[i];
-            arr[i] = arr[maxIdx];
-            arr[maxIdx] = tmp;
-            double tmpIdx = index[i];
-            index[i] = index[maxIdx];
-            index[maxIdx] = tmpIdx;
-        }
-        return index;
-    }
-
-    public static double[] sortIndexAscending(double[] arr) {
-        int n = arr.length;
-        double[] index = new double[n];
-        for (int i = 0; i < n; i++) {
-            index[i] = i;
-        }
-        for (int i = 0; i < n-1; i++) {
-            int minIdx = i;
-            for (int j = i+1; j < n; j++) {
-                if (arr[j] < arr[minIdx]) {
-                    minIdx = j;
-                }
-            }
-            double tmp = arr[i];
-            arr[i] = arr[minIdx];
-            arr[minIdx] = tmp;
-            double tmpIdx = index[i];
-            index[i] = index[minIdx];
-            index[minIdx] = tmpIdx;
-        }
-        return index;
-    }
-
-    public static double[] sort(double[] arr, int myTurnBot, Board board) {
-        if(myTurnBot == board.getCurrentPlayer())
-            sortDecision = sortIndexDescending(arr);
-        else
-            sortDecision = sortIndexAscending(arr);
-        return sortDecision;
-    }
-
-
-
+    /** L'objectif est d'utiliser au mieux le temps d'exéction */
     public static NegamaxNode iterativeDeepeningNegamax(Board board, double timeLimit, int maxDepth) {
 
         NegamaxNode bestNode = null;
         long startTime = System.currentTimeMillis();
-        for (NegamaxNode.maxDepth = 0; NegamaxNode.maxDepth <= maxDepth  && System.currentTimeMillis() - startTime < timeLimit; NegamaxNode.maxDepth++ ) {
+        for (NegamaxNode.maxDepth = 0; /*NegamaxNode.maxDepth <= maxDepth  &&*/ System.currentTimeMillis() - startTime < timeLimit; NegamaxNode.maxDepth++ ) {
             bestNode = new NegamaxNode(board, 0, -Double.MAX_VALUE, Double.MAX_VALUE, board.getCurrentPlayer());
 
         }
         return bestNode;
     }
 
-
-    private int best(Board board, int myTurnBot) {
+    /** Fonction d'évaluation qui prend plusieurs paramètres en compte dans le jeu :
+     *      - Case vide : moins de flexibilité dans le jeu et prise consécutive possible
+     *      - Case graines < 3 : prise consécutive possible
+     *      - Case graines >= 12 : Stratégie du Kroo
+     *      - Case graines < 3 consécutives : emplifie le phénomène de prise consécutive
+     *
+     *      return : La somme de la reward  et ( de la différence du score multipliée par un coefficient pour accentuer ce critère )
+     */
+    private int heuristic(Board board, int myTurnBot) {
 
         int[] seedsPlayer = board.getPlayerHoles();
         int[] seedsOpponent = board.getOpponentHoles();
@@ -219,7 +171,7 @@ public class NegamaxNode {
             }
             reward += 5 * countConsecutiveHolesWithOneOrTwoSeeds(board.getPlayerHoles());
             reward -= 5 * countConsecutiveHolesWithOneOrTwoSeeds(board.getOpponentHoles());
-            res =  ( (25 * ((board.getScore (NegamaxNode.player)) - board.getScore(Board.otherPlayer(NegamaxNode.player)))) + reward);
+            res =  reward + (30 * ((board.getScore (NegamaxNode.player)) - board.getScore(Board.otherPlayer(NegamaxNode.player))));
         }
 
         /** Tour de l'adversaire */
@@ -246,32 +198,45 @@ public class NegamaxNode {
             }
             reward -= 5 * countConsecutiveHolesWithOneOrTwoSeeds(board.getPlayerHoles());
             reward += 5 * countConsecutiveHolesWithOneOrTwoSeeds(board.getOpponentHoles());
-            res =  - 1 *( (25 * ((board.getScore (NegamaxNode.player)) - board.getScore(Board.otherPlayer(NegamaxNode.player)))) + reward);
+
+            /** Multiplication du résultat par - 1 car c'est le tour de l'adversaire */
+            res =  reward + (30 * ((board.getScore (NegamaxNode.player)) - board.getScore(Board.otherPlayer(NegamaxNode.player))));
+            res = res * -1;
         }
         return  res;
     }
 
+    /** Focntions d'initialisation pour tester dynamiquement l'iterative deepening ou une autre heuristique */
+    /*
     protected static void initialize(Board board, int maxDepth, Bot.HEURISTICS testHeuristic)
     {
         NegamaxNode.maxDepth = maxDepth;
         NegamaxNode.player = board.getCurrentPlayer ();
         NegamaxNode.testHeuristic = testHeuristic;
-        /** On instancie le tableau avec une recherche de gauche à droite au départ */
-        sortDecision = new double[Board.NB_HOLES];
-        for(int i = 0; i < Board.NB_HOLES; i++)
-            sortDecision[i] = i;
     }
 
     protected static void initialize (Board board, Bot.HEURISTICS testHeuristic)
     {
         NegamaxNode.player = board.getCurrentPlayer ();
         NegamaxNode.testHeuristic = testHeuristic;
-        /** On instancie le tableau avec une recherche de gauche à droite au départ */
+    }
+    */
+
+    protected static void initialize(Board board)
+    {
+        NegamaxNode.player = board.getCurrentPlayer ();
+
+        /** Initialisation du tableau pour un parcours des coups classique : de gauche à droite
+         *  Utile uniquement pour l'implémentation du Move Ordering */
         sortDecision = new double[Board.NB_HOLES];
-        for(int i = 0; i < Board.NB_HOLES; i++)
+        for (int i = 0; i < Board.NB_HOLES; i++)
             sortDecision[i] = i;
     }
 
+    /**
+     * L'évaluation du noeud
+     * @return
+     */
     double getEvaluation ()
     {
         return this.evaluation;

@@ -13,7 +13,7 @@ public class NegamaxBot extends CompetitorBot {
     /**
      * Profondeur maximale
      */
-    private static final int MAX_DEPTH = 10;
+    private static final int MAX_DEPTH = 9;
 
     /**
      * @throws InvalidBotException

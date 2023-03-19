@@ -53,14 +53,22 @@ public abstract class MinMaxNode
 
                 try
                 {
+                    //System.out.println("player avant = " + copy.getCurrentPlayer ());
                     int score = copy.playMoveSimulationScore (copy.getCurrentPlayer (), decision);
 
+                    //System.out.println("player après = " + copy.getCurrentPlayer ());
 
                     copy = copy.playMoveSimulationBoard (copy.getCurrentPlayer (), decision);
 
+                    //System.out.println("player fin = " + copy.getCurrentPlayer () + "\n");
                     /* Si la nouvelle situation de jeu est un coup qui met fin à la partie,
                        on évalue la situation actuelle */
-                    if ((score < 0) || (copy.getScore (Board.otherPlayer (copy.getCurrentPlayer ())) >= 25) || (copy.getNbSeeds () <= 6) ){
+
+
+
+                    if ((score < 0) ||
+                            (copy.getScore (Board.otherPlayer (copy.getCurrentPlayer ())) >= 25) ||
+                            (copy.getNbSeeds () <= 6)){
                         switch (testHeuristic){
                             case DIFF_SCORE:
                                 this.decision [i] = this.diffScore (copy);
