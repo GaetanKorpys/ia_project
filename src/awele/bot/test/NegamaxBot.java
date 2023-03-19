@@ -44,7 +44,7 @@ public class NegamaxBot extends CompetitorBot {
     @Override
     public double[] getDecision(Board board) {
         NegamaxNode.initialize(board, NegamaxBot.MAX_DEPTH, HEURISTIC);
-        return new NegamaxNode(board, 0, -Double.MAX_VALUE, Double.MAX_VALUE).getDecision();
+        return new NegamaxNode(board, 0, -Double.MAX_VALUE, Double.MAX_VALUE, board.getCurrentPlayer()).getDecision();
     }
 
     /**

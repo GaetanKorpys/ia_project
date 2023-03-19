@@ -12,7 +12,7 @@ import java.util.Date;
  * @author Alexandre Blansché
  * Bot qui prend ses décisions selon le MinMax
  */
-public class NegamaxBot extends CompetitorBot {
+public class NegamaxBot extends DemoBot {
     /** Profondeur maximale */
     private static final int MAX_DEPTH = 10;
 

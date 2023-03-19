@@ -26,7 +26,7 @@ public class NegamaxNode {
 
 
     /** Algorithme récursif */
-    public NegamaxNode(Board board, int depth, double alpha, double beta)
+    public NegamaxNode(Board board, int depth, double alpha, double beta, int myBotTurn)
     {
         /* On crée un tableau des évaluations des coups à jouer pour chaque situation possible */
         this.decision = new double[Board.NB_HOLES];
@@ -40,8 +40,7 @@ public class NegamaxNode {
             /* Si le coup est jouable */
             if(board.getPlayerHoles()[(int) sortDescendingDecision[i]] != 0) //(int) sortDescendingDecision[i]
             {
-                //if(board.getPlayerHoles()[i] != board.getPlayerHoles()[(int) sortDescendingDecision[i]])
-                    //System.out.println("AAAA");
+
                 /* Sélection du coup à jouer */
                 double [] decision = new double [Board.NB_HOLES];
                 decision [(int) sortDescendingDecision[i]] = 1;//(int) sortDescendingDecision[i]
@@ -49,31 +48,28 @@ public class NegamaxNode {
                 try {
 
                     /* On copie la grille de jeu et on joue le coup sur la copie */
-                    Board copy = board.playMoveSimulationBoard(board.getCurrentPlayer(), decision);
+                    Board played = board.playMoveSimulationBoard(myBotTurn, decision);
 
-                    int score = copy.getScore(copy.getCurrentPlayer ());
-                    //copy.playMoveSimulationScore (copy.getCurrentPlayer (), decision);
-                    //copy = copy.playMoveSimulationBoard (copy.getCurrentPlayer (), decision);
 
                     /** Conditions d'arret */
                     /** Noeud terminal ou profondeur max atteinte */
-                    if ( (depth >= NegamaxNode.maxDepth) || (score < 0) || (copy.getScore (Board.otherPlayer (copy.getCurrentPlayer ())) >= 25) || (copy.getNbSeeds () <= 6) ){
+                    if ( (depth >= NegamaxNode.maxDepth) || (played.getScore(myBotTurn) < 0) || (played.getScore (myBotTurn) >= 25) || (played.getNbSeeds () <= 6) ){
                         switch (testHeuristic){
                             case DIFF_SCORE:
-                                this.decision [i] = this.diffScore (copy);
+                                this.decision [i] = this.diffScore (played);
                                 break;
                             case BEST:
-                                this.decision [i] = this.best (copy);
+                                this.decision [i] = this.best (played, myBotTurn);
                                 break;
                             case TEST:
-                                this.decision [i] = this.test (copy);
+                                this.decision [i] = this.test (played);
                                 break;
                         }
                     }
                     else
                     {
                         /* On construit le noeud suivant */
-                        NegamaxNode child = new NegamaxNode (copy, depth + 1, -beta, -alpha);
+                        NegamaxNode child = new NegamaxNode (played, depth + 1, -beta, -alpha, Board.otherPlayer(myBotTurn));
                         /* On récupère l'évaluation du noeud fils */
                         this.decision [i] = -child.getEvaluation ();
                     }
@@ -126,8 +122,8 @@ public class NegamaxNode {
 
         NegamaxNode bestNode = null;
         long startTime = System.currentTimeMillis();
-        for (NegamaxNode.maxDepth = 0; /*NegamaxNode.maxDepth <= maxDepth  && */System.currentTimeMillis() - startTime < timeLimit; NegamaxNode.maxDepth++ ) {
-            bestNode = new NegamaxNode(board, 0, -Double.MAX_VALUE, Double.MAX_VALUE);
+        for (NegamaxNode.maxDepth = 0; NegamaxNode.maxDepth <= maxDepth  && System.currentTimeMillis() - startTime < timeLimit; NegamaxNode.maxDepth++ ) {
+            bestNode = new NegamaxNode(board, 0, -Double.MAX_VALUE, Double.MAX_VALUE, board.getCurrentPlayer());
 
 
             //for(int i = 0; i < Board.NB_HOLES; i++)
@@ -137,6 +133,7 @@ public class NegamaxNode {
             //sortDescendingDecision = sortIndexDescending(bestNode.getDecision());
             //for(int i = 0; i < Board.NB_HOLES; i++)
               //  System.out.println(sortDescendingDecision[i]);
+
         }
 
         return bestNode;
@@ -151,39 +148,58 @@ public class NegamaxNode {
         return board.getScore (NegamaxNode.player) - board.getScore (Board.otherPlayer(NegamaxNode.player));
     }
 
-    /** Ne fonctionne parfois pas en dessous de 100ms */
-    private int best(Board board) {
+    private int best(Board board, int myTurnBot) {
 
-        int total = 0;
         int[] seedsPlayer = board.getPlayerHoles(), seedsOpponent = board.getOpponentHoles();
 
-        for (int i = 0; i < 6; i++) {
-            int seedP = seedsPlayer[i];
-            int seedO = seedsOpponent[i];
-            if (seedP >= 12)
-                total += 28;
-            else if (seedP == 0)
-                total -= 54;
-            else if (seedP < 3)
-                total -= 36;
+        int res;
+        int total2 = 0;
 
-            if (seedO >= 12)
-                total -= 28;
-            else if (seedO == 0)
-                total += 54;
-            else if (seedO < 3)
-                total += 36;
+        if(NegamaxNode.player == myTurnBot){
+            for (int i = 0; i < 6; i++) {
+                int seedP = seedsPlayer[i];
+                int seedO = seedsOpponent[i];
+                if (seedP >= 12)
+                    total2 -= 28;
+                else if (seedP == 0)
+                    total2 += 54;
+                else if (seedP < 3)
+                    total2 += 36;
+
+                if (seedO >= 12)
+                    total2 += 28;
+                else if (seedO == 0)
+                    total2 -= 54;
+                else if (seedO < 3)
+                    total2 -= 36;
+            }
+
+            res =  ( (25 * ((board.getScore (NegamaxNode.player)) - board.getScore(Board.otherPlayer(NegamaxNode.player)))) + total2);
         }
+        else{
 
-        //int res2 = (25 * (board.getScore (Board.otherPlayer(board.getCurrentPlayer())) - board.getScore(board.getCurrentPlayer()))) - total;
-        int res = (25 * (board.getScore (NegamaxNode.player) - board.getScore(Board.otherPlayer (NegamaxNode.player)))) - total;
-        /*
-        int res3 = (25 * (board.getScore (Board.otherPlayer (NegamaxNode.player))) - board.getScore((NegamaxNode.player))) - total;
+            for (int i = 0; i < 6; i++) {
+                int seedP = seedsPlayer[i];
+                int seedO = seedsOpponent[i];
+                if (seedP >= 12)
+                    total2 += 28;
+                else if (seedP == 0)
+                    total2 -= 54;
+                else if (seedP < 3)
+                    total2 -= 36;
 
-        System.out.println(res);
-        System.out.println(res2);
-        System.out.println(res3+"\n");
-        */
+                if (seedO >= 12)
+                    total2 -= 28;
+                else if (seedO == 0)
+                    total2 += 54;
+                else if (seedO < 3)
+                    total2 += 36;
+            }
+            res =  - 1 *( (25 * ((board.getScore (NegamaxNode.player)) - board.getScore(Board.otherPlayer(NegamaxNode.player)))) + total2);
+            //res =  ( (25 * ((board.getScore (NegamaxNode.player)) - board.getScore(Board.otherPlayer(NegamaxNode.player)))) + total);
+            //res = (25 * ((board.getScore (Board.otherPlayer(NegamaxNode.player))) - board.getScore(NegamaxNode.player))) - total;
+
+        }
         return  res;
     }
 

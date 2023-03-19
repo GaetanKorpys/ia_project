@@ -50,10 +50,14 @@ public abstract class MinMaxNode
                 decision [i] = 1;
                 /* On copie la grille de jeu et on joue le coup sur la copie */
                 Board copy = (Board) board.clone ();
+
                 try
                 {
                     int score = copy.playMoveSimulationScore (copy.getCurrentPlayer (), decision);
+
+
                     copy = copy.playMoveSimulationBoard (copy.getCurrentPlayer (), decision);
+
                     /* Si la nouvelle situation de jeu est un coup qui met fin à la partie,
                        on évalue la situation actuelle */
                     if ((score < 0) || (copy.getScore (Board.otherPlayer (copy.getCurrentPlayer ())) >= 25) || (copy.getNbSeeds () <= 6) ){

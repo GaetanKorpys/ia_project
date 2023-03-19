@@ -14,10 +14,10 @@ import java.util.Date;
 public class MinMaxBot extends DemoBot
 {
     /** Profondeur maximale */
-    private static final int MAX_DEPTH = 8;
+    private static final int MAX_DEPTH = 9;
 
     /** Heuristique choisie */
-    private static final HEURISTICS HEURISTIC = HEURISTICS.BEST;
+    private static final HEURISTICS HEURISTIC = HEURISTICS.DIFF_SCORE;
 
 
     /**
