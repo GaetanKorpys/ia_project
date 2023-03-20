@@ -1,5 +1,6 @@
 package awele.bot.demo.knn1;
 
+import awele.bot.CompetitorBot;
 import awele.bot.DemoBot;
 import awele.core.Board;
 import awele.core.InvalidBotException;
@@ -8,7 +9,7 @@ import awele.core.InvalidBotException;
  * @author Alexandre Blansché
  * Premier bot qui utilise l'algorithm k-NN pour faire des prédictions
  */
-public class Knn1Bot extends DemoBot
+public class Knn1Bot extends CompetitorBot
 {
     private static final int k = 10;
     private Knn1Data data;

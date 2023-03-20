@@ -14,13 +14,16 @@ public class NegamaxBot extends DemoBot {
     private static final int MAX_DEPTH = 9;
 
     /** Heuristique choisie */
-    private static final HEURISTICS HEURISTIC = HEURISTICS.BEST;
+    private static final HEURISTICS HEURISTIC = HEURISTICS.TEST;
+
+    /**Temps d'exécutuion limite */
+    private static final int TIME_LIMIT = 100;
 
     /**
      * @throws InvalidBotException
      */
     public NegamaxBot() throws InvalidBotException {
-        this.setBotName("Bot leur les fesses");
+        this.setBotName("Bot leur les fesses H3");
         this.addAuthor("Gaetan Korpys");
         this.addAuthor("Theo Rousseau");
     }
@@ -44,7 +47,8 @@ public class NegamaxBot extends DemoBot {
     @Override
     public double[] getDecision(Board board) {
         NegamaxNode.initialize(board, NegamaxBot.MAX_DEPTH, HEURISTIC);
-        return new NegamaxNode(board, 0, -Double.MAX_VALUE, Double.MAX_VALUE, board.getCurrentPlayer()).getDecision();
+        //return new NegamaxNode(board, 0, -Double.MAX_VALUE, Double.MAX_VALUE, board.getCurrentPlayer()).getDecision();
+        return NegamaxNode.iterativeDeepeningNegamax(board, NegamaxBot.TIME_LIMIT, NegamaxBot.MAX_DEPTH).getDecision();
     }
 
     /**

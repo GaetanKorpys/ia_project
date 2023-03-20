@@ -11,10 +11,10 @@ import awele.core.InvalidBotException;
  * @author Alexandre Blansché
  * Bot qui prend ses décisions selon le MinMax
  */
-public class NegamaxIDBot extends CompetitorBot {
+public class NegamaxIDBot extends DemoBot {
 
     /** Profondeur maximale */
-    private static final int MAX_DEPTH = 14;
+    private static final int MAX_DEPTH = 15;
 
     /** Temps d'exécutuion limite */
     private static final int TIME_LIMIT = 100;
@@ -26,7 +26,7 @@ public class NegamaxIDBot extends CompetitorBot {
      * @throws InvalidBotException
      */
     public NegamaxIDBot() throws InvalidBotException {
-        this.setBotName ("Bot leur les fesses ID");
+        this.setBotName ("Bot leur les fesses H2");
         this.addAuthor ("Gaetan Korpys");
         this.addAuthor ("Theo Rousseau");
     }

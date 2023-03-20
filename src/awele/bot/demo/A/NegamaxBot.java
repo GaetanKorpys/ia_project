@@ -9,7 +9,7 @@ import awele.core.InvalidBotException;
  * @author Alexandre Blansché
  * Bot qui prend ses décisions selon le MinMax
  */
-public class NegamaxBot extends CompetitorBot {
+public class NegamaxBot extends DemoBot {
     /**
      * Profondeur maximale
      */
@@ -19,7 +19,7 @@ public class NegamaxBot extends CompetitorBot {
      * @throws InvalidBotException
      */
     public NegamaxBot() throws InvalidBotException {
-        this.setBotName("NegaMax V3 Profondeur = " + MAX_DEPTH);
+        this.setBotName("Bot leur les fesses H3");
         this.addAuthor("Quentin BEAUPUY & Vivien KORPYS");
     }
 

@@ -1,110 +1,79 @@
 Mémoire totale : 4,0 GiB
-4 classes ont été trouvées
+6 classes ont été trouvées
+class awele.bot.demo.first.FirstBot
+class awele.bot.demo.last.LastBot
 class awele.bot.demo.minmax.MinMaxBot
-class awele.bot.test.NegamaxIDBot
+class awele.bot.demo.knn2.Knn2Bot
 class awele.bot.BotLeurLesFesses.NegamaxIDBot
-class awele.bot.demo.A.NegamaxBot
+class awele.bot.demo.knn1.Knn1Bot
 
-Bot 1/4
+Bot 1/6
+Classe : awele.bot.demo.first.FirstBot
+Nom du bot : First
+Auteur(s) : Alexandre Blansché
+Temps d'apprentissage : 00:00:00.000
+Durée d'une prise de décision : 00:00:00.000
+Usage mémoire : 0 B
+Usage mémoire maximum : 359,7 KiB
+
+Bot 2/6
+Classe : awele.bot.demo.last.LastBot
+Nom du bot : Last
+Auteur(s) : Alexandre Blansché
+Temps d'apprentissage : 00:00:00.000
+Durée d'une prise de décision : 00:00:00.000
+Usage mémoire : 352 B
+Usage mémoire maximum : 330,5 KiB
+
+Bot 3/6
 Classe : awele.bot.demo.minmax.MinMaxBot
 Nom du bot : MinMax & DIFF_SCORE & 9
 Auteur(s) : Alexandre Blansché
 Temps d'apprentissage : 00:00:00.000
-Durée d'une prise de décision : 00:00:00.065
-Usage mémoire : 8,3 KiB
-Usage mémoire maximum : 156,0 MiB
+Durée d'une prise de décision : 00:00:00.088
+Usage mémoire : 21,0 KiB
+Usage mémoire maximum : 175,1 MiB
 
-Bot 2/4
-Classe : awele.bot.test.NegamaxIDBot
-Nom du bot : Bot leur les fesses ID
-Auteur(s) : Gaetan Korpys et Theo Rousseau
-Temps d'apprentissage : 00:00:00.000
-Durée d'une prise de décision : 00:00:00.147
-Usage mémoire : 12,8 KiB
-Usage mémoire maximum : 124,0 MiB
+Bot 4/6
+Classe : awele.bot.demo.knn2.Knn2Bot
+Nom du bot : k-NN2
+Auteur(s) : Alexandre Blansché
+Temps d'apprentissage : 00:00:00.012
+Durée d'une prise de décision : 00:00:00.000
+Usage mémoire : 26,9 KiB
+Usage mémoire maximum : 1,6 MiB
 
-Bot 3/4
+Bot 5/6
 Classe : awele.bot.BotLeurLesFesses.NegamaxIDBot
 Nom du bot : Bot leur les fesses
 Auteur(s) : Gaetan Korpys et Theo Rousseau
 Temps d'apprentissage : 00:00:00.000
-Durée d'une prise de décision : 00:00:00.174
-Usage mémoire : 1,0 KiB
-Usage mémoire maximum : 180,0 MiB
+Durée d'une prise de décision : 00:00:00.186
+Usage mémoire : 13,3 KiB
+Usage mémoire maximum : 200,0 MiB
 
-Bot 4/4
-Classe : awele.bot.demo.A.NegamaxBot
-Nom du bot : NegaMax V3 Profondeur = 9
-Auteur(s) : Quentin BEAUPUY & Vivien KORPYS
-Temps d'apprentissage : 00:00:00.000
-Durée d'une prise de décision : 00:00:00.038
-Usage mémoire : 984 B
-Usage mémoire maximum : 127,0 MiB
+Bot 6/6
+Classe : awele.bot.demo.knn1.Knn1Bot
+Nom du bot : k-NN1
+Auteur(s) : Alexandre Blansché
+Temps d'apprentissage : 00:00:00.001
+Durée d'une prise de décision : 00:00:00.000
+Usage mémoire : 12,3 KiB
+Usage mémoire maximum : 837,7 KiB
 
-4 bots ont été instanciés
-Durée du chargement : 00:00:18.017
+6 bots ont été instanciés
+Durée du chargement : 00:00:09.341
 Mémoire utilisée : 1,5 MiB
 
 Que le championnat commence !
 
-Affrontement 1/6
-MinMax & DIFF_SCORE & 9 vs. Bot leur les fesses ID
-Score : 0.12 - 2.88
-Bot leur les fesses ID a gagné
-Nombre de coups joués : 113.72 par match
-Durée : 00:00:10.553 par match
-Mémoire utilisée : 1,4 MiB
-
-Affrontement 2/6
-MinMax & DIFF_SCORE & 9 vs. Bot leur les fesses
+Affrontement 1/15
+First vs. Last
 Score : 0.0 - 3.0
-Bot leur les fesses a gagné
-Nombre de coups joués : 87.4 par match
-Durée : 00:00:09.318 par match
-Mémoire utilisée : 1,4 MiB
+Last a gagné
+Nombre de coups joués : 291.5 par match
+Durée : 00:00:00.000 par match
+Mémoire utilisée : 1,5 MiB
 
-Affrontement 3/6
-MinMax & DIFF_SCORE & 9 vs. NegaMax V3 Profondeur = 9
-Score : 0.04 - 2.92
-NegaMax V3 Profondeur = 9 a gagné
-Nombre de coups joués : 105.82 par match
-Durée : 00:00:03.425 par match
-Mémoire utilisée : 1,4 MiB
-
-Affrontement 4/6
-Bot leur les fesses ID vs. Bot leur les fesses
-Score : 1.04 - 1.76
-Bot leur les fesses a gagné
-Nombre de coups joués : 120.26 par match
-Durée : 00:00:18.215 par match
-Mémoire utilisée : 1,4 MiB
-
-Affrontement 5/6
-Bot leur les fesses ID vs. NegaMax V3 Profondeur = 9
-Score : 2.04 - 0.96
-Bot leur les fesses ID a gagné
-Nombre de coups joués : 119.7 par match
-Durée : 00:00:09.776 par match
-Mémoire utilisée : 1,4 MiB
-
-Affrontement 6/6
-Bot leur les fesses vs. NegaMax V3 Profondeur = 9
-Score : 2.16 - 0.84
-Bot leur les fesses a gagné
-Nombre de coups joués : 113.44 par match
-Durée : 00:00:10.683 par match
-Mémoire utilisée : 1,4 MiB
-
-Durée du championnat : 00:51:38.815
-
-Scores finaux :
-MinMax & DIFF_SCORE & 9 : 0.16
-Bot leur les fesses ID : 5.96
-Bot leur les fesses : 6.92
-NegaMax V3 Profondeur = 9 : 4.72
-
-Rangs :
-1. Bot leur les fesses : 6.92
-2. Bot leur les fesses ID : 5.96
-3. NegaMax V3 Profondeur = 9 : 4.72
-4. MinMax & DIFF_SCORE & 9 : 0.16
+Affrontement 2/15
+First vs. MinMax & DIFF_SCORE & 9

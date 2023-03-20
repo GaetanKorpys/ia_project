@@ -135,7 +135,7 @@ public class NegamaxNode {
 			else if (seedO < 3)
 				total += 36;
 		}
-		int res4 = (25 * ((board.getScore (myTour)) - board.getScore(opponentTour))) - total;
+		int res4 = ( ((board.getScore (myTour)) - board.getScore(opponentTour))) - total;
 
 		return  res4;
 	}

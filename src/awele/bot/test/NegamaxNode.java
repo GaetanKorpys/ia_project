@@ -58,20 +58,16 @@ public class NegamaxNode {
                     /** Conditions d'arret */
                     /** Noeud terminal ou profondeur max atteinte */
                     if ( (depth >= NegamaxNode.maxDepth) || (played.getScore(myBotTurn) < 0) || (Board.otherPlayer( played.getScore (myBotTurn)) >= 25) || (played.getNbSeeds () <= 6) ){
-                        /*
+
                         switch (testHeuristic){
-                            case DIFF_SCORE:
-                                this.decision [i] = this.diffScore (played);
-                                break;
                             case BEST:
                                 this.decision [i] = this.best (played, myBotTurn);
                                 break;
                             case TEST:
-                                this.decision [i] = this.test (played);
+                                this.decision [i] = this.test (played, myBotTurn);
                                 break;
                         }
-                        */
-                        this.decision[i] = this.best(played, myBotTurn);
+
                     }
                     else
                     {
@@ -180,13 +176,75 @@ public class NegamaxNode {
 
         NegamaxNode bestNode = null;
         long startTime = System.currentTimeMillis();
-        for (NegamaxNode.maxDepth = 0; NegamaxNode.maxDepth <= maxDepth  && System.currentTimeMillis() - startTime < timeLimit; NegamaxNode.maxDepth++ ) {
+        for (NegamaxNode.maxDepth = 0; /*NegamaxNode.maxDepth <= maxDepth  && */System.currentTimeMillis() - startTime < timeLimit; NegamaxNode.maxDepth++ ) {
             bestNode = new NegamaxNode(board, 0, -Double.MAX_VALUE, Double.MAX_VALUE, board.getCurrentPlayer());
 
         }
         return bestNode;
     }
 
+    private int test(Board board, int myTurnBot) {
+
+        int[] seedsPlayer = board.getPlayerHoles();
+        int[] seedsOpponent = board.getOpponentHoles();
+
+        int res;
+        int reward = 0;
+
+        /** Tour de BotLeurLesFesses */
+        /** board.getCurrentPlayer() = bot adverse */
+        if(NegamaxNode.player == myTurnBot){
+            for (int i = 0; i < 6; i++) {
+                int seedP = seedsPlayer[i];
+                int seedO = seedsOpponent[i];
+                if (seedP >= 12)
+                    reward -= 30;
+                else if (seedP == 0)
+                    reward += 50;
+                else if (seedP < 3)
+                    reward += 40;
+
+                if (seedO >= 12)
+                    reward += 30;
+                else if (seedO == 0)
+                    reward -= 50;
+                else if (seedO < 3)
+                    reward -= 40;
+
+            }
+            //reward += 5 * countConsecutiveHolesWithOneOrTwoSeeds(board.getPlayerHoles());
+            //reward -= 5 * countConsecutiveHolesWithOneOrTwoSeeds(board.getOpponentHoles());
+            res =  ( (30* ((board.getScore (NegamaxNode.player)) - board.getScore(Board.otherPlayer(NegamaxNode.player)))) + reward);
+        }
+
+        /** Tour de l'adversaire */
+        /** board.getCurrentPlayer() = BotLeurLesFesses  */
+        else{
+
+            for (int i = 0; i < 6; i++) {
+                int seedP = seedsPlayer[i];
+                int seedO = seedsOpponent[i];
+                if (seedP >= 12)
+                    reward += 30;
+                else if (seedP == 0)
+                    reward -= 50;
+                else if (seedP < 3)
+                    reward -= 40;
+
+                if (seedO >= 12)
+                    reward -= 30;
+                else if (seedO == 0)
+                    reward += 50;
+                else if (seedO < 3)
+                    reward += 40;
+
+            }
+            //reward -= 5 * countConsecutiveHolesWithOneOrTwoSeeds(board.getPlayerHoles());
+            //reward += 5 * countConsecutiveHolesWithOneOrTwoSeeds(board.getOpponentHoles());
+            res =  - 1 *( (30* ((board.getScore (NegamaxNode.player)) - board.getScore(Board.otherPlayer(NegamaxNode.player)))) + reward);
+        }
+        return  res;
+    }
 
     private int best(Board board, int myTurnBot) {
 
@@ -217,9 +275,9 @@ public class NegamaxNode {
                     reward -= 40;
 
             }
-            reward += 5 * countConsecutiveHolesWithOneOrTwoSeeds(board.getPlayerHoles());
-            reward -= 5 * countConsecutiveHolesWithOneOrTwoSeeds(board.getOpponentHoles());
-            res =  ( (25 * ((board.getScore (NegamaxNode.player)) - board.getScore(Board.otherPlayer(NegamaxNode.player)))) + reward);
+            //reward += 5 * countConsecutiveHolesWithOneOrTwoSeeds(board.getPlayerHoles());
+            //reward -= 5 * countConsecutiveHolesWithOneOrTwoSeeds(board.getOpponentHoles());
+            res =  ( ( ((board.getScore (NegamaxNode.player)) - board.getScore(Board.otherPlayer(NegamaxNode.player)))) + reward);
         }
 
         /** Tour de l'adversaire */
@@ -244,9 +302,9 @@ public class NegamaxNode {
                     reward += 40;
 
             }
-            reward -= 5 * countConsecutiveHolesWithOneOrTwoSeeds(board.getPlayerHoles());
-            reward += 5 * countConsecutiveHolesWithOneOrTwoSeeds(board.getOpponentHoles());
-            res =  - 1 *( (25 * ((board.getScore (NegamaxNode.player)) - board.getScore(Board.otherPlayer(NegamaxNode.player)))) + reward);
+            //reward -= 5 * countConsecutiveHolesWithOneOrTwoSeeds(board.getPlayerHoles());
+            //reward += 5 * countConsecutiveHolesWithOneOrTwoSeeds(board.getOpponentHoles());
+            res =  - 1 *( ( ((board.getScore (NegamaxNode.player)) - board.getScore(Board.otherPlayer(NegamaxNode.player)))) + reward);
         }
         return  res;
     }

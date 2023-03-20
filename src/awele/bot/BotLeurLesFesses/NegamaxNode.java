@@ -1,6 +1,7 @@
 package awele.bot.BotLeurLesFesses;
 
 import awele.bot.Bot;
+import awele.bot.demo.minmax.MinMaxNode;
 import awele.core.Board;
 import awele.core.InvalidBotException;
 
