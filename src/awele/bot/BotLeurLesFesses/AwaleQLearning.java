@@ -1,29 +1,24 @@
-package awele.bot.test;
+package awele.bot.BotLeurLesFesses;
 
-import awele.bot.CompetitorBot;
-import awele.bot.DemoBot;
-import awele.bot.demo.knn1.Knn1Bot;
-import awele.bot.demo.knn2.Knn2Bot;
-import awele.bot.demo.last.LastBot;
-import awele.core.Awele;
 import awele.core.Board;
-import awele.core.InvalidBotException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import java.io.*;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.HashMap;
-
 import java.util.Arrays;
-
+import java.util.HashMap;
 import java.util.Random;
 
 
 /** Classe à ne pas utiliser pour le tournoi !
- *  Il s'agit de notre idée initiale pour le projet.
+ *  Il s'agit de notre idée initiale pour le projet qui consiste à utiliser l'apprentissage par renforcement.
  *  Nous tenions à partager le début du code même si le bot n'a finalement pas été implémenté */
-public class AwaleQLearning  { //extends CompetitorBot
+public class AwaleQLearning { //extends CompetitorBot
 
     // Définir les constantes pour la taille de la grille de jeu et le nombre d'actions possibles
     private static final int NUM_ACTIONS = 6;
